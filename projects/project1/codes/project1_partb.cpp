@@ -11,15 +11,16 @@ ofstream ofile;
 double f(double); //Declaration of the RHS of the differential equation to be solved.
 
 int main(int argc, char* argv[]){
-  int n = atoi(argv[1]);
-  char *outfilename;
-  outfilename = argv[2];
-  double *a, *b, *c, *d, *l, *u, *q, *v, *y;
-  double h;
+  int n = atoi(argv[1]);        //Number of grid points
+  char *outfilename;            //Declaration of variable we want to write v(x) to.
+  outfilename = argv[2];        //The actual filename of the file we'll write v(x) to.
+  double *a, *b, *c, *d, *l, *u, *q, *v, *y;    //Declaration of pointers to represent vectors.
+  double h;                                     //Declaration of stepsize defined by the start_point, end_point and number of grid points n.
   double start_point = 0;
   double end_point = 1;
-  h = (end_point-start_point)/( (double) n);
+  h = (end_point-start_point)/( (double) n);    //Defines the stepsize.
 
+  //Specification of the vectors used in the calculations using dynamic memory allocation.
   a = new double[n];
   b = new double[n];
   c = new double[n];
@@ -29,11 +30,13 @@ int main(int argc, char* argv[]){
   q = new double[n];
   v = new double[n];
   y = new double[n];
-  //Filling the arrays with the necessary values:
+
+  //Used to time how long the program takes to finish.
   clock_t start, finish;
   start = clock();
+
+  //Filling the arrays with the necessary values:
   for (int i = 0; i < n; i++){
-    //Filling up the matrix.
     a[i] = -1.0;
     b[i] = 2.0;
     c[i] = -1.0;
@@ -75,7 +78,7 @@ int main(int argc, char* argv[]){
     i--;
   }
 
-  //Main program is finished, so we'll find the timestamp at finish.
+  //Main program is finished, so we'll find the timestamp at finish and print it in the terminal.
   finish = clock();
   double timeused = (double) (finish-start)/(CLOCKS_PER_SEC);
   cout << "Total time = " << timeused << endl;
