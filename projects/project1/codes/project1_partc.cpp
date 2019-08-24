@@ -14,18 +14,17 @@ int main(int argc, char* argv[]){
   int n = atoi(argv[1]);
   char *outfilename;
   outfilename = argv[2];
-  double *a, *b, *c, *d, *l, *u, *q, *v, *y;
+  double  *d, *l, *q, *v, *y;
   double h;
   double start_point = 0;
   double end_point = 1;
   h = (end_point-start_point)/( (double) n);
-
-  a = new double[n];
-  b = new double[n];
-  c = new double[n];
+  double a = -1.0;
+  double c = -1.0;
+  double b = 2.0;
+  double u = c;
   d = new double[n];
   l = new double[n];
-  u = new double[n];
   q = new double[n];
   v = new double[n];
   y = new double[n];
@@ -34,22 +33,17 @@ int main(int argc, char* argv[]){
   start = clock();
   for (int i = 0; i < n; i++){
     //Filling up the matrix.
-    a[i] = -1.0;
-    b[i] = 2.0;
-    c[i] = -1.0;
     q[i] = f(i*h)*h*h;  //RHS of the matrix equation.
   }
 
   //step 1: LU-decomposition (A = LU)
   for (int i = 0; i < n; i++){
     if (i == 0){
-      d[i] = b[i];
-      u[i] = c[i];
+      d[i] = b;
     }
     else{
-      l[i] = a[i-1]/d[i-1];
-      d[i] = b[i] - l[i]*u[i-1];
-      u[i] = c[i];
+      l[i] = a/d[i-1];
+      d[i] = b - l[i]*u;
     }
   }
 
@@ -70,7 +64,7 @@ int main(int argc, char* argv[]){
       v[i] = y[i]/d[i];
     }
     else{
-      v[i] = (y[i] - u[i]*v[i+1])/d[i];
+      v[i] = (y[i] - u*v[i+1])/d[i];
     }
     i--;
   }
@@ -81,12 +75,8 @@ int main(int argc, char* argv[]){
   cout << "Total time = " << timeused << endl;
 
   //Deallocate memory. We'll keep v until it's written to a file.
-  delete[] a;
-  delete[] b;
-  delete[] c;
   delete[] d;
   delete[] l;
-  delete[] u;
   delete[] q;
 
 

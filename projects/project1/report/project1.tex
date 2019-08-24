@@ -245,7 +245,13 @@ Here we got $2n-1$ multiplications and $n-1$ additions, so the number of float
 
 
 Now, assuming that $b_1 = b_2 = \cdots = b_n$ and $a_1 = c_1$, $a_2 = c_2,  \cdots, a_{n-1} = c_{n-1}$, we can simplify the relations as 
+\begin{gather}
+	d_1 = b_1, \qquad u_1 = c_1, \\
+	u_i = c_i = c_1, \qquad \text{for} \qquad 1 < i \leq n,\\
+	\ell_i = \frac{a_{i-1}}{d_{i-1}} = \frac{a_1}{d_{i-1}}, \qquad \text{for} \qquad 1 < i \leq n,\\
+	d_i = b_i - \ell_iu_i = b_1 - \ell_iu_1 \qquad \text{for} \qquad 1 < i \leq n,
+\end{gather}
 
 
 
-\end{document}
+\end{document} 
