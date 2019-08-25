@@ -93,8 +93,56 @@ We're going to solve the differential equation
 \begin{equation}\label{diff_eq}
 	-u''(x) = f(x), \quad x \in (0,1), \quad u(0)=u(1)=0.
 \end{equation}
-We'll approximate this differential equation by a function $v(x) \approx u(x)$ by the 
-approximation scheme 
+To this end, we'll derive an approximation to the second derivative of $u(x)$ before we estimate the total error of the approximation. 
+\subsection{Derivation of the approximation scheme and an upper-bound on its total error}
+
+First the derivation:
+\begin{equation}\label{forward_diff}
+	u(x+h) = u(x) + hu'(x) + \frac{h^2u''(x)}{2!} + \frac{h^3u'''(x)}{3!} + \frac{h^4u^{(4)}(\xi_1)}{4!},
+\end{equation}
+and 
+\begin{equation}\label{backward_diff}
+	u(x-h) = u(x) - hu'(x) + \frac{h^2u''(x)}{2!} - \frac{h^3u'''(x)}{3!} + \frac{h^4u^{(4)}(\xi_2)}{4!},
+\end{equation}
+where $h$ is the stepsize, $\xi_1 \in (x,x+h)$ and $\xi_2 \in (x-h,x)$. 
+Adding \eqref{forward_diff} and \eqref{backward_diff} and rearranging with respect to $u''(x)$ yields
+\begin{equation}
+	u''(x) = \frac{u(x+h)-2u(x) + u(x-h)}{h^2} + \frac{h^2}{4!}\left[u^{(4)}(\xi_1) + u^{(4)}(\xi_2)\right],
+\end{equation}
+and in approximating this error, we might as well pick the largest possible error. Assume 
+that $\xi \in (x-h,x+h)$ such that $u^{(4)}(\xi) \geq u^{(4)}(\xi_1),u^{(4)}(\xi_2)$. To ensure that $u^{(4)}(\xi) \geq u^{(4)}(\xi_1) + u^{(4)}(\xi_2)$ we set 
+$u^{(4)}(\xi) = 2\max\left(u^{(4)}(\xi_1), u^{(4)}(\xi_2)\right)$.
+\begin{equation}
+	\epsilon_\text{trunc} = \frac{h^2}{4!}\left[u^{(4)}(\xi_1) + u^{(4)}(\xi_2)\right] \approx 2\frac{u^{(4)}u(\xi)}{4!} \leq \max\limits_{\xi\in (x-h,x+h)} \frac{h^2}{12}\abs{u^{(4)}(\xi)} 
+\end{equation}
+We'll solve the differential eq. using $f(x) = 100\exp(-10x)$. For this, there exists a closed-form solution given by 
+\begin{equation}\label{closed_form_solution}
+	u(x) = 1 - (1-e^{-10})x - e^{-10x}.
+\end{equation}
+The second derivative of \eqref{closed_form_solution} is given as $u''(x) = -10^4\exp(-10x)$. So the upper-bound estimate of the truncation error is 
+\begin{equation}
+	\epsilon_\text{trunc} \leq \max_{\xi \in (x-h,x+h)}\frac{h^2}{12}\abs{u^{(4)(\xi)}} = \left(\frac{h^2}{12}\abs{u^{(4)}(\xi)}\right)\bigg|_{\xi = 0} = \frac{10^4}{12}h^2.
+\end{equation}
+
+To estimate the total error, we need include the error due to loss of precision. This is found by 
+\begin{equation}
+	\epsilon_\text{lop} \leq \max_{\zeta \in (x-h,x+h)} \abs{u''(\zeta)} =  \max_{\zeta \in (x-h,x+h)} \abs{ \frac{u(x+h)-2u(x) + u(x-h)}{h^2}} \leq \frac{2\epsilon_M}{h^2},
+\end{equation}
+where $\epsilon_M \leq 10^{-15}$ using double precision. Thus the upper-bound estimate for the total error is 
+\begin{equation}
+	\epsilon = \epsilon_\text{trunc} + \epsilon_\text{lop} \leq \frac{10^4}{12}h^2 + \frac{2\times 10^{-15}}{h^2}.
+\end{equation}
+Differentiating $\epsilon$ with respect to $h$, we can find an approximate value for $h$ that yields the smallest total error
+\begin{equation}
+	\dv{\epsilon}{h} = \frac{10^4}{6}h - \frac{4\epsilon_M}{h^3} = 0,
+\end{equation}
+which gives 
+\begin{equation}
+	h = \left(\frac{24\epsilon_M}{10^4}\right) \approx 10^{-9}
+\end{equation}
+
+\subsection{Approximate solution of the differential equation by the Thomas algorithm}
+We'll approximate this differential equation by a function $v(x) \approx u(x)$. By the derivation above, its clear that we can write the differential eq. for each $x_i$ as 
 \begin{equation}
 	-\frac{-v_{i+1}+v_{i-1} - 2v_i}{h^2} = f_i, \quad i=1,2,...,n,
 \end{equation}
