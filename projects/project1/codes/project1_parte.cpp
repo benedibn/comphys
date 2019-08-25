@@ -11,7 +11,8 @@ using namespace arma;
 
 ofstream ofile; //Global variable for the output file.
 
-double f(double);   //Declaration of RHS of the differential eq.
+//double f(double);   //Declaration of RHS of the differential eq.
+void f(double, double, double&); //Declaration of the RHS using call by reference.
 
 int main(int argc, char* argv[]){
   int n = atoi(argv[1]);        //Number of grid points.
@@ -38,7 +39,8 @@ int main(int argc, char* argv[]){
   vec q = vec(n);   //To represent the right hand side.
   double h_squared = h*h;     //Factor to reduce the number of flops in the for-loop.
   for (int i = 0; i < n; i++){
-    q(i) = f(i*h)*h_squared;
+    //q(i) = f(i*h)*h_squared;
+    f(i*h, h_squared, q(i)); //Call by reference to speed up code.
   }
 
   start = clock();  //Start of computations.
@@ -67,8 +69,15 @@ int main(int argc, char* argv[]){
 }
 
 
-
+/*
 double f(double x){
   //Specification of the RHS of the differential eq.
   return 100*exp(-10*x);
+}
+*/
+
+void f(double x, double h, double& vector_element){
+  //Specification of the RHS of the differential eq.
+  vector_element = 100*exp(-10*x)*h;
+  return;
 }

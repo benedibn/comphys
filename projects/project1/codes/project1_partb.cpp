@@ -8,7 +8,8 @@
 using namespace std;
 ofstream ofile;
 
-double f(double); //Declaration of the RHS of the differential equation to be solved.
+//double f(double); //Declaration of the RHS of the differential equation to be solved.
+void f(double, double, double&);
 
 int main(int argc, char* argv[]){
   int n = atoi(argv[1]);        //Number of grid points
@@ -36,11 +37,13 @@ int main(int argc, char* argv[]){
   start = clock();
 
   //Filling the arrays with the necessary values:
+  double h_squared = h*h; //Multiplication factor that reduces number of flops in the for-loop.
   for (int i = 0; i < n; i++){
     a[i] = -1.0;
     b[i] = 2.0;
     c[i] = -1.0;
-    q[i] = f(i*h)*h*h;  //RHS of the matrix equation.
+    //q[i] = f(i*h)*h*h;  //RHS of the matrix equation.
+    f(i*h,h_squared, q[i]); //Call by reference to speed up execution.
   }
 
   //step 1: LU-decomposition (A = LU)
@@ -104,7 +107,14 @@ int main(int argc, char* argv[]){
   return 0;
 }
 
+/*
 double f(double x){
   //RHS of the differential equation
   return 100*exp(-10*x);
+}
+*/
+
+void f(double x, double h, double& vector){
+   vector = 100*exp(-10*x)*h;
+   return;
 }
