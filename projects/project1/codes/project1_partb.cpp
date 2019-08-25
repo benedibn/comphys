@@ -95,10 +95,11 @@ int main(int argc, char* argv[]){
 
   //Write v to a file
   ofile.open(outfilename);
+  ofile << timeused << endl;
   for (int i = 0; i < n; i++){
     ofile << v[i] << endl;
   }
-
+  ofile.close();      //Closes output file.
   delete[] v;
   return 0;
 }
