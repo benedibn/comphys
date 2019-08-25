@@ -9,12 +9,17 @@
 using namespace std;
 using namespace arma;
 
+ofstream ofile; //Global variable for the output file.
+
 double f(double);   //Declaration of RHS of the differential eq.
 
 int main(int argc, char* argv[]){
-  int n = atoi(argv[1]);
+  int n = atoi(argv[1]);        //Number of grid points.
+  char* outfilename = argv[2];  //Name of the output file.
   double h = 1/((double) n);      //stepsize
   mat A = mat(n,n);   //Creates a (n x n)-matrix.
+  clock_t start, finish;  //Declaration of time-storing variables.
+
 
   //Fill the matrix with the correct values at its tridiagonal.
   for (int i = 0; i < n; i++){
@@ -36,6 +41,7 @@ int main(int argc, char* argv[]){
     q(i) = f(i*h)*h_squared;
   }
 
+  start = clock();  //Start of computations.
   //Step 1: Perform LU-decomposition
   mat L, U;           //Empty matrices to be filled using the LU-decomposition function of armadillo
   lu(L,U,A);          //Fills L and U by the rule A = LU.
@@ -45,6 +51,17 @@ int main(int argc, char* argv[]){
 
   //Step 3: Solve Uv = y;
   vec v = solve(U,y);     //Solves Uv = y using armadillos built-in function "solve".
+
+  finish = clock(); //End of computations.
+  double timeused = (double) (finish-start)/(CLOCKS_PER_SEC);
+  ofile.open(outfilename);
+  ofile << timeused << endl;    //Writes the time used on the first line of the output file.
+
+  //Writes the solution vector v to the output file.
+  for (int i = 0; i < n; i++){
+    ofile << v(i) << endl;
+  }
+  ofile.close();
 
   return 0;
 }
