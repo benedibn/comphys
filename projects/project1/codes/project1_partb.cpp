@@ -78,7 +78,7 @@ int main(int argc, char* argv[]){
     i--;
   }
 
-  //Main program is finished, so we'll find the timestamp at finish and print it in the terminal.
+  //Main part of the program is finished, so we'll find the timestamp at finish and print it in the terminal.
   finish = clock();
   double timeused = (double) (finish-start)/(CLOCKS_PER_SEC);
   cout << "Total time = " << timeused << endl;
