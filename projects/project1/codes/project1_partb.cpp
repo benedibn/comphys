@@ -84,7 +84,7 @@ int main(int argc, char* argv[]){
   //Main part of the program is finished, so we'll find the timestamp at finish and print it in the terminal.
   finish = clock();
   double timeused = (double) (finish-start)/(CLOCKS_PER_SEC);
-  cout << "Total time = " << timeused << endl;
+  cout << "Total time = " << timeused << " s" << endl;
 
   //Deallocate memory. We'll keep v until it's written to a file.
   delete[] a;
