@@ -39,7 +39,6 @@ for n in number_of_gridpoints:
     plt.legend()
     i += 1
 
-figurename = filename + ".png"
 plt.savefig(figurename)
 system("mv " + figurename + " ~/Documents/skole/comphys/projects/project1/codes/plots/plots_partb")
 plt.close()
