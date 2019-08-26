@@ -96,50 +96,49 @@ We're going to solve the differential equation
 To this end, we'll derive an approximation to the second derivative of $u(x)$ before we estimate the total error of the approximation. 
 \subsection{Derivation of the approximation scheme and an upper-bound on its total error}
 
-First the derivation:
-\begin{equation}\label{forward_diff}
-	u(x+h) = u(x) + hu'(x) + \frac{h^2u''(x)}{2!} + \frac{h^3u'''(x)}{3!} + \frac{h^4u^{(4)}(\xi_1)}{4!},
+We start by Taylor expanding about some point $x$ 
+\begin{equation}
+	f(x+h) = f(x) + hf'(x) + \frac{h^2}{2!}f''(x) + \frac{h^3}{3!}f'''(x) + \frac{h^4}{4!}f^{(4)}(\xi_1),
 \end{equation}
 and 
-\begin{equation}\label{backward_diff}
-	u(x-h) = u(x) - hu'(x) + \frac{h^2u''(x)}{2!} - \frac{h^3u'''(x)}{3!} + \frac{h^4u^{(4)}(\xi_2)}{4!},
-\end{equation}
-where $h$ is the stepsize, $\xi_1 \in (x,x+h)$ and $\xi_2 \in (x-h,x)$. 
-Adding \eqref{forward_diff} and \eqref{backward_diff} and rearranging with respect to $u''(x)$ yields
 \begin{equation}
-	u''(x) = \frac{u(x+h)-2u(x) + u(x-h)}{h^2} + \frac{h^2}{4!}\left[u^{(4)}(\xi_1) + u^{(4)}(\xi_2)\right],
+	f(x-hh) = f(x) - hf'(x) + \frac{h^2}{2!}f''(x) - \frac{h^3}{3!}f'''(x) + \frac{h^4}{4!}f^{(4)}(\xi_2),
 \end{equation}
-and in approximating this error, we might as well pick the largest possible error. Assume 
-that $\xi \in (x-h,x+h)$ such that $u^{(4)}(\xi) \geq u^{(4)}(\xi_1),u^{(4)}(\xi_2)$. To ensure that $u^{(4)}(\xi) \geq u^{(4)}(\xi_1) + u^{(4)}(\xi_2)$ we set 
-$u^{(4)}(\xi) = 2\max\left(u^{(4)}(\xi_1), u^{(4)}(\xi_2)\right)$.
+where $\xi_1 \in (x,x+h)$ and $\xi_2 \in (x-h,x)$. Adding the two equations and rearranging a bit we get 
 \begin{equation}
-	\epsilon_\text{trunc} = \frac{h^2}{4!}\left[u^{(4)}(\xi_1) + u^{(4)}(\xi_2)\right] \approx 2\frac{u^{(4)}u(\xi)}{4!} \leq \max\limits_{\xi\in (x-h,x+h)} \frac{h^2}{12}\abs{u^{(4)}(\xi)} 
+	f''(x) = \frac{f(x+h)-2f(x) + f(x-h)}{h^2} - \frac{h^2}{4!}\left[f(\xi_1)-f(\xi_2)\right].
 \end{equation}
-We'll solve the differential eq. using $f(x) = 100\exp(-10x)$. For this, there exists a closed-form solution given by 
-\begin{equation}\label{closed_form_solution}
-	u(x) = 1 - (1-e^{-10})x - e^{-10x}.
-\end{equation}
-The second derivative of \eqref{closed_form_solution} is given as $u''(x) = -10^4\exp(-10x)$. So the upper-bound estimate of the truncation error is 
+To find the signed truncation error, we rewrite the equation as 
 \begin{equation}
-	\epsilon_\text{trunc} \leq \max_{\xi \in (x-h,x+h)}\frac{h^2}{12}\abs{u^{(4)(\xi)}} = \left(\frac{h^2}{12}\abs{u^{(4)}(\xi)}\right)\bigg|_{\xi = 0} = \frac{10^4}{12}h^2.
+	f''(x) - \frac{f(x+h)-2f(x) + f(x-h)}{h^2} = -\frac{h^2}{24}\left[f^{(4)}(\xi_1)-f^{(4)}(\xi_2)\right].
+\end{equation}
+Before we proceed with the error analysis, we might as well pick $\xi \in (x-h,x+h)$ such that $f(\xi) = \max \{f(\xi_1),f(\xi_2)\}$ and multiply it by a factor $2$ at the RHS, that is
+\begin{equation}
+	f''(x) - \frac{f(x+h)-2f(x) + f(x-h)}{h^2} = -\frac{h^2}{12}f(\xi).
+\end{equation}
+Due to the fact that computers are unable to represent numbers exactly, the computed values can be written as $\bar{f}(x+h) = f(x+h)(1+\epsilon_1)$, $\bar{f}(x)(1+\epsilon_2)$ and $\bar{f}(x-h)(\epsilon_3)$. An upper-bound estimate of the total error, that is, the truncation error and the error due to loss of precision is 
+\begin{equation}
+	\begin{split}
+	\epsilon & = \abs{f'(x) - \bar{f}'(x)} \\
+			 & = \abs{f''(x) - \frac{\bar{f}(x+h)-2\bar{f}(x) + \bar{f}(x-h)}{h^2}}\\
+			 & = \abs{f''(x) - \frac{f(x+h)(1+\epsilon_1)-2f(x)(1+\epsilon_2) + f(x-h)(1+\epsilon_3)}{h^2}} \\
+			 & = \abs{f''(x) - \frac{f(x+h)-2f(x) + f(x-h)}{h^2} - \frac{f(x+h)\epsilon_1 - 2f(x)\epsilon_2 + f(x-h)\epsilon_3}{h^2}} \\
+			 & \leq \abs{-\frac{h^2}{12}f(\xi)- \frac{\epsilon_1 - 2\epsilon_2 + \epsilon_3}{h^2}f(\zeta)} \\
+			 & \leq 
+			 \frac{h^2}{12}\max_{\xi \in (x-h,x+h)}\abs{f^{(4)}(\xi)} + \frac{\abs{\epsilon_1} + 2\abs{\epsilon_2} + \epsilon_3}{h^2}\max_{\zeta \in (x-h,x+h)}\abs{f(\zeta)} \\
+			 & \leq \frac{h^2}{12}\max_{\xi \in (x-h,x+h)}\abs{f^{(4)}(\xi)} + \frac{4\epsilon_M}{h^2}\max_{\zeta \in (x-h,x+h)}\abs{f(\zeta)}
+	\end{split}
+\end{equation}
+where $\zeta \in (x-h,x+h)$ and the fact as $h\to 0$, $f(x+h) \to f(x)$ and $f(x-h) \to f(x)$, so replaced them all with their common maximum $f(\zeta)$ at the point $\zeta \in (x-h,x+h)$. Furthermore, we set $\epsilon_M = \max\{\abs{\epsilon_1}, \abs{\epsilon_2}, \abs{\epsilon_3}\}$. Now let $M_1 \equiv \max_{\xi \in (x-h,x+h)}\abs{f^{(4)}(\xi)}$ and 
+$M_2 \equiv \max_{\zeta \in (x-h,x+h)}\abs{f(\zeta)}$. Then the upper-bound estimate of the total error can neatly be written as
+\begin{equation}
+	\epsilon \leq \frac{h^2}{12}M_1 + \frac{4\epsilon_M}{h^2}M_2.
+\end{equation}
+Solving $\dv*{\epsilon}{h} = 0$ with respect to $h$ yields the optimal choice of step-size $h^*$ given as  
+\begin{equation}
+	h^* = \left(\frac{48\epsilon_M M_2}{M_1}\right)^{1/4}.
 \end{equation}
 
-To estimate the total error, we need include the error due to loss of precision. This is found by 
-\begin{equation}
-	\epsilon_\text{lop} \leq \max_{\zeta \in (x-h,x+h)} \abs{u''(\zeta)} =  \max_{\zeta \in (x-h,x+h)} \abs{ \frac{u(x+h)-2u(x) + u(x-h)}{h^2}} \leq \frac{2\epsilon_M}{h^2},
-\end{equation}
-where $\epsilon_M \leq 10^{-15}$ using double precision. Thus the upper-bound estimate for the total error is 
-\begin{equation}
-	\epsilon = \epsilon_\text{trunc} + \epsilon_\text{lop} \leq \frac{10^4}{12}h^2 + \frac{2\times 10^{-15}}{h^2}.
-\end{equation}
-Differentiating $\epsilon$ with respect to $h$, we can find an approximate value for $h$ that yields the smallest total error
-\begin{equation}
-	\dv{\epsilon}{h} = \frac{10^4}{6}h - \frac{4\epsilon_M}{h^3} = 0,
-\end{equation}
-which gives 
-\begin{equation}
-	h = \left(\frac{24\epsilon_M}{10^4}\right) \approx 10^{-9}
-\end{equation}
 
 \subsection{Approximate solution of the differential equation by the Thomas algorithm}
 We'll approximate this differential equation by a function $v(x) \approx u(x)$. By the derivation above, its clear that we can write the differential eq. for each $x_i$ as 
