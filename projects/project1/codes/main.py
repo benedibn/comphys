@@ -1,7 +1,7 @@
 from os import system
 import sys
 
-number_of_gridpoints = [10, 1e2, 1e3, 1e4, 1e5, 1e6, 1e7]
+number_of_gridpoints = [10, 1e2, 1e3, 1e4, 1e5, 1e6, 1e7, 1e8]
 number_of_gridpoints = [int(i) for i in number_of_gridpoints]
 
 #run program for all n in number_of_gridpoints.
@@ -18,7 +18,11 @@ print("Plots are finished, making congregation of plots...")
 
 system("python3" + " " + "make_plot_subplots.py" + " " + "all_plots.png")
 
-print("congregation of plots are finished, removing .txt files...")
+print("congregation of plots are finished, computing maximum errors and write to file...")
+
+system("python3 compute_error.py")
+
+print("Errors are computed, removing .txt files containing the computed solution...")
 #Remove txt-files to clear up space .
 for n in number_of_gridpoints:
     system("rm" + " " + "solution_part_b_n_" + str(n) + ".txt")
