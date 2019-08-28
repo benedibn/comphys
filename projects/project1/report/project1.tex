@@ -116,29 +116,74 @@ Before we proceed with the error analysis, we might as well pick $\xi \in (x-h,x
 \begin{equation}
 	f''(x) - \frac{f(x+h)-2f(x) + f(x-h)}{h^2} = -\frac{h^2}{12}f(\xi).
 \end{equation}
-Due to the fact that computers are unable to represent numbers exactly, the computed values can be written as $\bar{f}(x+h) = f(x+h)(1+\epsilon_1)$, $\bar{f}(x)(1+\epsilon_2)$ and $\bar{f}(x-h)(\epsilon_3)$. An upper-bound estimate of the total error, that is, the truncation error and the error due to loss of precision is 
+Due to the fact that computers are unable to represent numbers exactly, the computed values can be written as $\bar{f}(x+h) = f(x+h)(1+\epsilon_1)$, $\bar{f}(x) = f(x)(1+\epsilon_2)$ and $\bar{f}(x-h) = f(x-h)(1+\epsilon_3)$. An upper-bound estimate of the global total error, that is, the truncation error and the error due to loss of precision is 
 \begin{equation}
 	\begin{split}
 	\epsilon & = \abs{f'(x) - \bar{f}'(x)} \\
 			 & = \abs{f''(x) - \frac{\bar{f}(x+h)-2\bar{f}(x) + \bar{f}(x-h)}{h^2}}\\
 			 & = \abs{f''(x) - \frac{f(x+h)(1+\epsilon_1)-2f(x)(1+\epsilon_2) + f(x-h)(1+\epsilon_3)}{h^2}} \\
 			 & = \abs{f''(x) - \frac{f(x+h)-2f(x) + f(x-h)}{h^2} - \frac{f(x+h)\epsilon_1 - 2f(x)\epsilon_2 + f(x-h)\epsilon_3}{h^2}} \\
-			 & \leq \abs{-\frac{h^2}{12}f(\xi)- \frac{\epsilon_1 - 2\epsilon_2 + \epsilon_3}{h^2}f(\zeta)} \\
+			 & \leq \abs{-\frac{h^2}{12}f(\xi)- \frac{\epsilon_1 - 2\epsilon_2 + \epsilon_3}{h^2}\max_{\zeta \in (x-h,x+h)}f(\zeta)} \\
 			 & \leq 
 			 \frac{h^2}{12}\max_{\xi \in (x-h,x+h)}\abs{f^{(4)}(\xi)} + \frac{\abs{\epsilon_1} + 2\abs{\epsilon_2} + \epsilon_3}{h^2}\max_{\zeta \in (x-h,x+h)}\abs{f(\zeta)} \\
-			 & \leq \frac{h^2}{12}\max_{\xi \in (x-h,x+h)}\abs{f^{(4)}(\xi)} + \frac{4\epsilon_M}{h^2}\max_{\zeta \in (x-h,x+h)}\abs{f(\zeta)}
+			 & \leq \frac{h^2}{12}\max_{\xi \in (0,1)}\abs{f^{(4)}(\xi)} + \frac{4\epsilon_M}{h^2}\max_{\zeta \in (0,1)}\abs{f(\zeta)}.
 	\end{split}
 \end{equation}
-where $\zeta \in (x-h,x+h)$ and the fact as $h\to 0$, $f(x+h) \to f(x)$ and $f(x-h) \to f(x)$, so replaced them all with their common maximum $f(\zeta)$ at the point $\zeta \in (x-h,x+h)$. Furthermore, we set $\epsilon_M = \max\{\abs{\epsilon_1}, \abs{\epsilon_2}, \abs{\epsilon_3}\}$. Now let $M_1 \equiv \max_{\xi \in (x-h,x+h)}\abs{f^{(4)}(\xi)}$ and 
-$M_2 \equiv \max_{\zeta \in (x-h,x+h)}\abs{f(\zeta)}$. Then the upper-bound estimate of the total error can neatly be written as
+Furthermore, we set $\epsilon_M = \max\{\abs{\epsilon_1}, \abs{\epsilon_2}, \abs{\epsilon_3}\}$. Now let $M_1 \equiv \max_{\xi \in (0,1)}\abs{f^{(4)}(\xi)}$ and 
+$m_2 \equiv \max_{\zeta \in (0,1)}\abs{f(\zeta)}$. Then the upper-bound estimate of the total error can neatly be written as
 \begin{equation}
 	\epsilon \leq \frac{h^2}{12}M_1 + \frac{4\epsilon_M}{h^2}M_2.
 \end{equation}
 Solving $\dv*{\epsilon}{h} = 0$ with respect to $h$ yields the optimal choice of step-size $h^*$ given as  
-\begin{equation}
+\begin{equation}\label{optimal_stepsize}
 	h^* = \left(\frac{48\epsilon_M M_2}{M_1}\right)^{1/4}.
 \end{equation}
+We need to determine $M_1$ and $M_2$ to estimate $h^*$ for our particular closed-form solution to the differential equation. This function is 
 
+\begin{equation}
+	f(x) = 1-(1-e^{-10})x - e^{-10x},
+\end{equation}
+and solving $\dv*{f}{x} = 0$ yields 
+\begin{equation}
+	\zeta = -\frac{\ln(1-e^{-10}) - \ln(10)}{10},
+\end{equation}
+so $M_2 = \abs{f(\zeta)}$.
+Furthermore, $f^{(4)}(x) = -10^4\exp(-10x)$, hence we see that $M_1 \leq \lim\limits_{\xi \to 0}\abs{f^{(4)}(\xi)}$. For simplicity, we might as well just set $M_1 = \abs{f^{(4)}(0)}$. Then we obtain 
+\begin{equation}
+	h^* \approx \left(\frac{48\epsilon_M \abs{f(\zeta)}}{\abs{f^{(4)}(0)}}\right)^{1/4} \approx 4\times 10^{-5},
+\end{equation}
+where we set $\epsilon_M = 10^{-15}$.
+
+\begin{table}
+\centering
+\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|}
+	\hline
+	$n$ &max error\\
+	\hline
+	1.0E+01&16.152559\\
+	\hline
+	1.0E+02&15.225099\\
+	\hline
+	1.0E+03&14.229336\\
+	\hline
+	1.0E+04&13.229730\\
+	\hline
+	2.5E+04&12.831815\\
+	\hline
+	5.0E+04&12.530794\\
+	\hline
+	1.0E+05&12.229769\\
+	\hline
+	2.5E+05&11.831832\\
+	\hline
+	5.0E+05&11.762308\\
+	\hline
+	1.0E+06&11.762308\\
+	\hline
+	1.0E+07&13.330384\\
+	\hline
+\end{tabular}
+\end{table}
 
 \subsection{Approximate solution of the differential equation by the Thomas algorithm}
 We'll approximate this differential equation by a function $v(x) \approx u(x)$. By the derivation above, its clear that we can write the differential eq. for each $x_i$ as 

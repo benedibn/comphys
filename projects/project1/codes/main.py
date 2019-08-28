@@ -1,12 +1,18 @@
 from os import system
 import sys
 
-number_of_gridpoints = [10, 1e2, 1e3, 1e4, 1e5, 1e6, 1e7, 1e8]
+#Compile and execute program:
+system("c++ -c -O3 -Wall project1.cpp")
+system("c++ -o project1.exe project1.o")
+print("Compilation finished, executing program...")
+
+
+number_of_gridpoints = [10, 1e2, 1e3, 1e4, 2.5e4,  5e4, 1e5, 2.5e5, 5e5, 1e6, 1e7]
 number_of_gridpoints = [int(i) for i in number_of_gridpoints]
 
 #run program for all n in number_of_gridpoints.
 for n in number_of_gridpoints:
-    system("./project1_partb.exe" + " " + str(n) + " " + "solution_part_b_n_" + str(n) + ".txt")
+    system("./project1.exe" + " " + str(n) + " " + "solution_part_b_n_" + str(n) + ".txt")
 
 print("Computations are done, making plots...")
 
