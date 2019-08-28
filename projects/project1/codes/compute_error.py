@@ -9,22 +9,12 @@ def error_function(v,u):
     else:
         return 0
 
-def f(x):
-    return 1-(1-np.exp(-10))*x - np.exp(-10*x)
-zeta = -(-np.log(1-np.exp(-10))-np.log(10))/10
-M1 = f(zeta)
-M2 = 10**4
-
-
 def u(x):
     """
     Analytical solution to the differential equation
     """
     return 1 - (1-np.exp(-10))*x - np.exp(-10*x)
 
-def estimated_max_error(h):
-    eps = (h**2/12)*M1 + ((4e-15)/h**2)*M2
-    return np.log10(eps)
 
 #Gotta read data from many files simultanously and compute the error for each and write it to a file.
 #This new file will be used to create a table.
@@ -49,12 +39,11 @@ for n in number_of_gridpoints:
     errors = np.zeros(n)        #Empty error array to store computed errors.
     for i in range(n-1):
         errors[i] = error_function(v[i], U[i+1])
-        if abs(errors[i]) < 1e-2:
+        if abs(errors[i]) < 1e-1:
             errors[i] = -100
 
-    max_error.append(np.max(errors[:-1]))              #Finds the maximum error between v(x) and u(x).
+    max_error.append(np.max(errors[0:-1]))              #Finds the maximum error between v(x) and u(x).
 
-max_error_estimation = list(map(f,h))
 with open("max_errors.txt", "w") as outfile:
     outfile.write("n" + " " + "max-error" + "\n")
     for i,e in zip(number_of_gridpoints, max_error):

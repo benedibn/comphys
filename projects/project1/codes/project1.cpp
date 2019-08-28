@@ -24,7 +24,7 @@ int main(int argc, char* argv[]){
   double h;                                     //Declaration of stepsize defined by the start_point, end_point and number of grid points n.
   double start_point = 0.0;
   double end_point = 1.0;
-  h = (end_point-start_point)/( (double) n);    //Defines the stepsize.
+  h = (end_point-start_point)/( (double) n + 1.0);    //Defines the stepsize.
 
 
   //Specification of the vectors used in the calculations using dynamic memory allocation.
@@ -109,15 +109,13 @@ void Forward_substitution(double* y, double* q, double* l, int n){
 }
 
 void Back_substitution(double* v, double* y, double* u, double* d, int n){
-  int i = n-1;
-  while (i > 0){
+  for (int i = n-1; i > 0; i--){
     if (i == n-1){
       v[i] = y[i]/d[i];
     }
     else{
       v[i] = (y[i] - u[i]*v[i+1])/d[i];
     }
-    i--;
   }
 
   //Deallocates y and d as their no longer needed.
