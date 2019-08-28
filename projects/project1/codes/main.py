@@ -7,7 +7,7 @@ system("c++ -o project1.exe project1.o")
 print("Compilation finished, executing program...")
 
 
-number_of_gridpoints = [10, 1e2, 1e3, 1e4, 2.5e4,  5e4, 1e5, 2.5e5, 5e5, 1e6, 1e7]
+number_of_gridpoints = [10, 50, 1e2, 5e2, 1e3, 5e3, 1e4, 5e4, 1e5, 5e5, 1e6, 1e7]
 number_of_gridpoints = [int(i) for i in number_of_gridpoints]
 
 #run program for all n in number_of_gridpoints.

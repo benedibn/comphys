@@ -29,7 +29,7 @@ def estimated_max_error(h):
 #Gotta read data from many files simultanously and compute the error for each and write it to a file.
 #This new file will be used to create a table.
 max_error = []
-number_of_gridpoints = [10, 1e2, 1e3, 1e4, 2.5e4,  5e4, 1e5, 2.5e5, 5e5, 1e6, 1e7]
+number_of_gridpoints = [10, 50, 1e2, 5e2, 1e3, 5e3, 1e4, 5e4, 1e5, 5e5, 1e6, 1e7]
 number_of_gridpoints = [int(i) for i in number_of_gridpoints]
 h = [1/(float(i)+1) for i in number_of_gridpoints]
 for n in number_of_gridpoints:
@@ -47,10 +47,14 @@ for n in number_of_gridpoints:
     x = np.linspace(0, 1, n+1)
     U = u(x)                    #Compute the corresponding values of u(x) at the same points as the data of v(x) is obtained.
     errors = np.zeros(n)        #Empty error array to store computed errors.
-    for i in range(n):
+    for i in range(n-1):
         errors[i] = error_function(v[i], U[i+1])
+        if abs(errors[i]) < 1e-2:
+            errors[i] = 0
+        #print(errors[i])
+        errors[-1] = 0
 
-    max_error.append(max(abs(errors)))     #Finds the maximum error between v(x) and u(x).
+    max_error.append(np.mean(errors))              #Finds the maximum error between v(x) and u(x).
 
 max_error_estimation = list(map(f,h))
 with open("max_errors.txt", "w") as outfile:
