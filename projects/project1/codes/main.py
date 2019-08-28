@@ -12,6 +12,7 @@ number_of_gridpoints = [int(i) for i in number_of_gridpoints]
 
 #run program for all n in number_of_gridpoints.
 for n in number_of_gridpoints:
+    print("Computing for n = " + str(n))
     system("./project1.exe" + " " + str(n) + " " + "solution_part_b_n_" + str(n) + ".txt")
 
 print("Computations are done, making plots...")
@@ -19,12 +20,13 @@ print("Computations are done, making plots...")
 #Create plots and move them to the folder ~/Documents/skole/comphys/projects/project1/codes/plots/plots_partb
 for n in number_of_gridpoints:
     system("python3" + " " + "make_plot.py" +  " " + "solution_part_b_n_" + str(n) + ".txt")
+    print("Plotting for n = " + str(n))
 
-print("Plots are finished, making congregation of plots...")
+print("Plots are finished, creating subplots...")
 
 system("python3" + " " + "make_plot_subplots.py" + " " + "all_plots.png")
 
-print("congregation of plots are finished, computing maximum errors and write to file...")
+print("subplots finished, computing maximum errors and writes it to a file...")
 
 system("python3 compute_error.py")
 

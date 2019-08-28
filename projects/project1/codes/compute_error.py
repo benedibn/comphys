@@ -34,17 +34,19 @@ for n in number_of_gridpoints:
                 v.append(float(number))
 
     v = np.array(v)
-    x = np.linspace(0, 1, n+1)
+    h = 1/(float(v) + 1)
+
+    x = [(i+1)*h for i in range(n)]
     U = u(x)                    #Compute the corresponding values of u(x) at the same points as the data of v(x) is obtained.
     errors = np.zeros(n)        #Empty error array to store computed errors.
-    for i in range(n-1):
+    for i in range(n):
         errors[i] = error_function(v[i], U[i+1])
-        if abs(errors[i]) < 1e-1:
-            errors[i] = -100
+        #if abs(errors[i]) < 1e-1:
+        #    errors[i] = -100
 
     max_error.append(np.max(errors[0:-1]))              #Finds the maximum error between v(x) and u(x).
 
-with open("max_errors.txt", "w") as outfile:
+with open("max_erromrs.txt", "w") as outfile:
     outfile.write("n" + " " + "max-error" + "\n")
     for i,e in zip(number_of_gridpoints, max_error):
         outfile.write(str("%.1E" % i) + " " + str("%f" % e) + "\n")
