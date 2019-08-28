@@ -50,11 +50,9 @@ for n in number_of_gridpoints:
     for i in range(n-1):
         errors[i] = error_function(v[i], U[i+1])
         if abs(errors[i]) < 1e-2:
-            errors[i] = 0
-        #print(errors[i])
-        errors[-1] = 0
+            errors[i] = -100
 
-    max_error.append(np.mean(errors))              #Finds the maximum error between v(x) and u(x).
+    max_error.append(np.max(errors[:-1]))              #Finds the maximum error between v(x) and u(x).
 
 max_error_estimation = list(map(f,h))
 with open("max_errors.txt", "w") as outfile:
