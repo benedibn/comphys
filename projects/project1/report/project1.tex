@@ -147,43 +147,16 @@ and solving $\dv*{f}{x} = 0$ yields
 \begin{equation}
 	\zeta = -\frac{\ln(1-e^{-10}) - \ln(10)}{10},
 \end{equation}
-so $M_2 = \abs{f(\zeta)}$.
+such that $M_2 = \abs{f(\zeta)}$.
 Furthermore, $f^{(4)}(x) = -10^4\exp(-10x)$, hence we see that $M_1 \leq \lim\limits_{\xi \to 0}\abs{f^{(4)}(\xi)}$. For simplicity, we might as well just set $M_1 = \abs{f^{(4)}(0)}$. Then we obtain 
 \begin{equation}
 	h^* \approx \left(\frac{48\epsilon_M \abs{f(\zeta)}}{\abs{f^{(4)}(0)}}\right)^{1/4} \approx 4\times 10^{-5},
 \end{equation}
-where we set $\epsilon_M = 10^{-15}$.
+where we set $\epsilon_M = 10^{-15}$. For our purposes, it's more convenient to express it in terms of the logarithm
+\begin{equation}
+	\log_{10}(h^*) \approx -4.4.
+\end{equation}
 
-\begin{table}
-\centering
-\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|}
-	\hline
-	$n$ &max error\\
-	\hline
-	1.0E+01&16.152559\\
-	\hline
-	1.0E+02&15.225099\\
-	\hline
-	1.0E+03&14.229336\\
-	\hline
-	1.0E+04&13.229730\\
-	\hline
-	2.5E+04&12.831815\\
-	\hline
-	5.0E+04&12.530794\\
-	\hline
-	1.0E+05&12.229769\\
-	\hline
-	2.5E+05&11.831832\\
-	\hline
-	5.0E+05&11.762308\\
-	\hline
-	1.0E+06&11.762308\\
-	\hline
-	1.0E+07&13.330384\\
-	\hline
-\end{tabular}
-\end{table}
 
 \subsection{Approximate solution of the differential equation by the Thomas algorithm}
 We'll approximate this differential equation by a function $v(x) \approx u(x)$. By the derivation above, its clear that we can write the differential eq. for each $x_i$ as 

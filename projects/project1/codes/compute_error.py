@@ -1,7 +1,8 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from os import system
-
+import sys
+N = int(sys.argv[1])
 
 def error_function(v,u):
     if u != 0 and v!= 0:
@@ -19,9 +20,9 @@ def u(x):
 #Gotta read data from many files simultanously and compute the error for each and write it to a file.
 #This new file will be used to create a table.
 max_error = []
-number_of_gridpoints = [10, 50, 1e2, 5e2, 1e3, 5e3, 1e4, 5e4, 1e5, 5e5, 1e6, 1e7]
-number_of_gridpoints = [int(i) for i in number_of_gridpoints]
-h = [1/(float(i)+1) for i in number_of_gridpoints]
+number_of_gridpoints = [int(10**((i+1)/2)) for i in range(N)]
+
+H = [1/(float(i)+1) for i in number_of_gridpoints]
 for n in number_of_gridpoints:
     filename = "solution_part_b_n_" + str(n) + ".txt"
     v = []
@@ -34,15 +35,15 @@ for n in number_of_gridpoints:
                 v.append(float(number))
 
     v = np.array(v)
-    h = 1/(float(v) + 1)
+    h = 1/(float(n) + 1)
 
-    x = [(i+1)*h for i in range(n)]
+    x = np.array([(i+1)*h for i in range(n)])
     U = u(x)                    #Compute the corresponding values of u(x) at the same points as the data of v(x) is obtained.
     errors = np.zeros(n)        #Empty error array to store computed errors.
     for i in range(n):
-        errors[i] = error_function(v[i], U[i+1])
-        #if abs(errors[i]) < 1e-1:
-        #    errors[i] = -100
+        errors[i] = error_function(v[i], U[i])
+        if abs(errors[i]) < 1e-1:
+            errors[i] = -100
 
     max_error.append(np.max(errors[0:-1]))              #Finds the maximum error between v(x) and u(x).
 
@@ -53,7 +54,7 @@ with open("max_erromrs.txt", "w") as outfile:
 
 figurename = "max_error.png"
 log_number_of_gridpoints = [np.log10(i) for i in number_of_gridpoints]
-log_h = [np.log10(i) for i in h]
+log_h = [np.log10(i) for i in H]
 plt.plot(log_h, max_error)
 plt.xlabel("log10(h)")
 plt.ylabel("|log10(max error)|")

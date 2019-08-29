@@ -23,12 +23,15 @@ def u(x):
     return 1 - (1-np.exp(-10))*x - np.exp(-10*x)
 
 n = len(v)
-x = np.linspace(0,1,n)
-X = np.linspace(0,1,1001)
+h = 1/(float(n) + 1)
+#x = np.linspace(0,1,n)
+x = [(i+1)*h for i in range(n)]
+x = np.array(x)
+#X = np.linspace(0,1,1001)
 
 
 plt.plot(x,v, label="Numerical solution with n = " + str(n))
-plt.plot(X,u(X), label="Analytical solution")
+plt.plot(x,u(x), label="Analytical solution")
 plt.xlabel("x")
 plt.ylabel("u(x)")
 plt.title("Simulation time = " + str(timeused) + " s")
