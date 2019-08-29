@@ -20,7 +20,7 @@ def u(x):
 #Gotta read data from many files simultanously and compute the error for each and write it to a file.
 #This new file will be used to create a table.
 max_error = []
-number_of_gridpoints = [int(10**((i+1)/2)) for i in range(N)]
+number_of_gridpoints = [int(10**i) for i in range(1,N+1)]
 
 H = [1/(float(i)+1) for i in number_of_gridpoints]
 for n in number_of_gridpoints:

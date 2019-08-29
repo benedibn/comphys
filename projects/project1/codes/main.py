@@ -4,15 +4,13 @@ N = int(sys.argv[1])
 
 #Compile and execute program:
 print("Compiling code...")
-system("c++ -c -O3 -Wall project1.cpp")
-system("c++ -o project1.exe project1.o")
+system("c++ -O3 -c project1.cpp")
+system("c++ -O3 -o project1.exe project1.o")
 print("Compilation finished, executing program...")
 
-number_of_gridpoints = [int(10**((i+1)/2)) for i in range(N)]
-#number_of_gridpoints = [10, 50, 1e2, 5e2, 1e3, 5e3, 1e4, 5e4, 1e5, 5e5, 1e6, 1e7]
-#number_of_gridpoints = [int(i) for i in number_of_gridpoints]
 
 #run program for all n in number_of_gridpoints.
+number_of_gridpoints = [int(10**((i))) for i in range(1,N+1)]
 for n in number_of_gridpoints:
     print("Computing for n = " + str(n))
     system("./project1.exe" + " " + str(n) + " " + "solution_part_b_n_" + str(n) + ".txt")
@@ -24,7 +22,7 @@ for n in number_of_gridpoints:
     system("python3" + " " + "make_plot.py" +  " " + "solution_part_b_n_" + str(n) + ".txt")
     print("Plotting for n = " + str(n))
 
-print("Plots are finished, creating subplots...")
+print("Plots are finished, Computing errors...")
 
 #system("python3" + " " + "make_plot_subplots.py" + " " + "all_plots.png")
 
@@ -32,7 +30,7 @@ print("Plots are finished, creating subplots...")
 
 system("python3 compute_error.py" + " " + str(N))
 
-print("Errors are computed, removing .txt files containing the computed solution...")
+print("Errors are computed, removing .txt files containing the computed solutions...")
 #Remove txt-files to clear up space .
 for n in number_of_gridpoints:
     system("rm" + " " + "solution_part_b_n_" + str(n) + ".txt")

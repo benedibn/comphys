@@ -18,8 +18,8 @@ void write_to_file(double*, char*, double, int);
 int main(int argc, char* argv[]){
   //Declaration of variables.
   int n = atoi(argv[1]);        //Number of grid points
-  char *outfilename;            //Declaration of variable we want to write v(x) to.
-  outfilename = argv[2];        //The actual filename of the file we'll write v(x) to.
+  char *outfilename_solution;            //Declaration of variable we want to write v(x) to.
+  outfilename_solution = argv[2];        //The actual filename of the file we'll write v(x) to.
   double *a, *b, *c, *d, *l, *u, *q, *v, *y;    //Declaration of pointers to represent vectors.
   double h;                                     //Declaration of stepsize defined by the start_point, end_point and number of grid points n.
   double start_point = 0.0;
@@ -68,7 +68,7 @@ int main(int argc, char* argv[]){
   cout << "Total time = " << timeused << " s" << endl;
 
   //Write result to file.
-  write_to_file(v, outfilename, timeused, n);
+  write_to_file(v, outfilename_solution, timeused, n);
   return 0;
 }
 
@@ -137,7 +137,7 @@ void write_to_file(double* v, char* outfilename, double timeused, int n){
 
   delete[] v;
   return;
-  
+
 }
 
 void f(double x, double h, double& vector_element){

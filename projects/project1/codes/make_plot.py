@@ -24,13 +24,13 @@ def u(x):
 
 n = len(v)
 h = 1/(float(n) + 1)
-#x = np.linspace(0,1,n)
-x = [(i+1)*h for i in range(n)]
-x = np.array(x)
+x = np.linspace(0,1,n+1)
+#x = [(i+1)*h for i in range(n)]
+#x = np.array(x)
 #X = np.linspace(0,1,1001)
 
 
-plt.plot(x,v, label="Numerical solution with n = " + str(n))
+plt.plot(x[0:-1],v, label="Numerical solution with n = " + str(n))
 plt.plot(x,u(x), label="Analytical solution")
 plt.xlabel("x")
 plt.ylabel("u(x)")
