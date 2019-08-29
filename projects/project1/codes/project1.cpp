@@ -89,6 +89,7 @@ void LU_decomposition(double* a, double* b, double* c, double* d, double* l, dou
   delete[] a;
   delete[] b;
   delete[] c;
+
   return;
 }
 
@@ -122,6 +123,7 @@ void Back_substitution(double* v, double* y, double* u, double* d, int n){
   delete[] y;
   delete[] d;
   delete[] u;
+
   return;
 }
 
@@ -135,6 +137,7 @@ void write_to_file(double* v, char* outfilename, double timeused, int n){
 
   delete[] v;
   return;
+  
 }
 
 void f(double x, double h, double& vector_element){
