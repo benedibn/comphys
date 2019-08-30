@@ -165,7 +165,7 @@ We'll approximate this differential equation by a function $v(x) \approx u(x)$. 
 \end{equation}
 which may be rearranged into 
 \begin{equation}\label{approx_1}
-	2v_i - v_{i+1} - v_{i-1} = f_ih^2 \equiv \tilde{b_i}.
+	2v_i - v_{i+1} - v_{i-1} = f_ih^2 \equiv q_i.
 \end{equation}
 From \eqref{approx_1} we can write 
 \begin{equation}
@@ -186,9 +186,90 @@ From \eqref{approx_1} we can write
 	v_1 \\ v_2 \\ \vdots \\ v_n
 	\end{pmatrix}
 	= \begin{pmatrix}
-	\tilde{b_1} \\ \tilde{b_2} \\ \vdots \\ \tilde{b_n}
+	q_1 \\ q_2 \\ \vdots \\ q_n
 	\end{pmatrix}
 \end{equation}
+To this end we'll first develop a general algorithm based on forward- and backward substitution to solve the equation $A\vb*{x} = \vb*{q}$. 
+Performing one step of Gaussian elimination on the following matrix yields 
+\begin{equation}
+	A =
+	\begin{pmatrix}
+	b_1 & c_1 & 0 & \cdots & \cdots & \cdots \\
+	a_1 & b_2 & c_2 & 0  &\cdots & \cdots  \\ 
+	0 & a_2 & b_3 & 0 & \cdots & \cdots \\
+	\vdots & \vdots & \vdots & \vdots & \ddots & \vdots \\
+	0 & 0 & \cdots & a_{n-2} & b_{n-1} & c_{n-1} \\
+	0 & 0 & \cdots  & 0 & a_{n-1} & b_n
+	\end{pmatrix}
+	\sim 
+	\begin{pmatrix}
+	b_1 & c_1 & 0 & \cdots & \cdots & \cdots \\
+	0 & b_2 - \frac{a_1}{b_1}c_1 & c_2 & 0  &\cdots & \cdots  \\ 
+	0 & a_2 & b_3 & 0 & \cdots & \cdots \\
+	\vdots & \vdots & \vdots & \vdots & \ddots & \vdots \\
+	0 & 0 & \cdots & a_{n-2} & b_{n-1} & c_{n-1} \\
+	0 & 0 & \cdots  & 0 & a_{n-1} & b_n
+	\end{pmatrix}.
+\end{equation}
+Defining $\tilde{b_2} \equiv b_2 - (a_1/b_1)c_1$, we can perform another step
+\begin{equation}
+	\begin{pmatrix}
+	b_1 & c_1 & 0 & \cdots & \cdots & \cdots \\
+	0 & \tilde{b_2} & c_2 & 0  &\cdots & \cdots  \\ 
+	0 & a_2 & b_3 & 0 & \cdots & \cdots \\
+	\vdots & \vdots & \vdots & \vdots & \ddots & \vdots \\
+	0 & 0 & \cdots & a_{n-2} & b_{n-1} & c_{n-1} \\
+	0 & 0 & \cdots  & 0 & a_{n-1} & b_n
+	\end{pmatrix}
+	\sim
+	\begin{pmatrix}
+	b_1 & c_1 & 0 & \cdots & \cdots & \cdots \\
+	0 & \tilde{b_2} & c_2 & 0  &\cdots & \cdots  \\ 
+	0 & 0 & b_3 - \frac{a_2}{\tilde{b_2}}c_2 & 0 & \cdots & \cdots \\
+	\vdots & \vdots & \vdots & \vdots & \ddots & \vdots \\
+	0 & 0 & \cdots & a_{n-2} & b_{n-1} & c_{n-1} \\
+	0 & 0 & \cdots  & 0 & a_{n-1} & b_n
+	\end{pmatrix},
+\end{equation}
+and at this point it's pretty obvious that the general pattern for the forward-substitution is  
+\begin{gather}
+	b_i = b_i - \frac{a_i}{b_i}c_i, \qquad \text{for} \qquad i=2,3,...,n,\\
+	q_i = y_i - \frac{a_i}{b_i}y_i, \qquad \text{for} \qquad i=2,3,...,n,
+\end{gather}
+where the second equation is simply performing the exact same operation on the RHS of the equation. Once this process in completed, we need to perform back-substitution to find $\vb*{x}$. At this point our equation will look as follows: 
+\begin{equation}
+		\begin{pmatrix}
+	b_1 & c_1 & 0 & \cdots & \cdots & \cdots \\
+	0 & \tilde{b}_2 & c_2 & 0  &\cdots & \cdots  \\ 
+	0 & 0 & \tilde{b}_3 & 0 & \cdots & \cdots \\
+	\vdots & \vdots & \vdots & \ddots & \vdots & \vdots \\
+	0 & 0 & \cdots & 0 & \tilde{b}_{n-1} & c_{n-1} \\
+	0 & 0 & \cdots  & 0 & 0 & \tilde{b}_n
+	\end{pmatrix}
+	\begin{pmatrix}
+	x_1 \\ x_2 \\ x_3 \\ \vdots \\ x_{n-1} \\ x_n
+	\end{pmatrix}
+	=
+	\begin{pmatrix}
+	b_1x_1 + c_1x_2\\
+	\tilde{b}_2x_2 + c_2x_3 \\
+	\tilde{b}_3x_3 + c_3x_4 \\
+	\vdots \\
+	\tilde{b}_{n-1}x_{n-1} + c_{n-1}x_{n} \\
+	\tilde{b}_nx_n
+	\end{pmatrix}
+	=
+	\begin{pmatrix}
+	\tilde{q}_1 \\ \tilde{q}_2 \\ \tilde{q}_3 \\ \vdots \\ \tilde{q}_{n-1} \\ \tilde{q}_n
+	\end{pmatrix},
+\end{equation}
+so the general algorithm for the back-substitution is 
+\begin{gather}
+	x_i = \frac{q_i}{b_i}, \qquad \text{for} \qquad i = n,\\
+	x_i = \frac{q_i - c_ix_{i+1}}{b_i},\qquad \text{for} \qquad i = n-1, n-2, ...,1.
+\end{gather}
+
+
 
 To this end we will develop an algorithm based on the LU-decomposition $A = LU$:
 \begin{equation} A= 
