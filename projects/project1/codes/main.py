@@ -10,29 +10,35 @@ print("Compilation finished, executing program...")
 
 
 #run program for all n in number_of_gridpoints.
-number_of_gridpoints = [int(10**((i))) for i in range(1,N+1)]
+number_of_gridpoints = [int(10**(i)) for i in range(1,N+1)]
 for n in number_of_gridpoints:
+    filename_solution = "solution_part_b_n_" + str(n) + ".txt"
+    filename_errors = "errors_n_" + str(n) + ".txt"
+    filename_time = "timeused_" + str(n) + ".txt"
     print("Computing for n = " + str(n))
-    system("./project1.exe" + " " + str(n) + " " + "solution_part_b_n_" + str(n) + ".txt")
+    system("./project1.exe" + " " + str(n) + " " + filename_solution + " " + filename_errors + " " + filename_time)
 
 print("Computations are done, making plots...")
 
 #Create plots and move them to the folder ~/Documents/skole/comphys/projects/project1/codes/plots/plots_partb
 for n in number_of_gridpoints:
-    system("python3" + " " + "make_plot.py" +  " " + "solution_part_b_n_" + str(n) + ".txt")
+    filename_solution = "solution_part_b_n_" + str(n) + ".txt"
+    system("python3" + " " + "make_plot.py" +  " " + filename_solution)
     print("Plotting for n = " + str(n))
 
-print("Plots are finished, Computing errors...")
+print("Plots are finished, creating a plot of the maximum relative error and writes the data to a file...")
 
-#system("python3" + " " + "make_plot_subplots.py" + " " + "all_plots.png")
+system("python3" + " " + "find_max_error.py" + " " + str(N))
 
-#print("subplots finished, computing maximum errors and writes it to a file...")
+system("python3" + " " + "create_timetable.py" + " " + str(N))
 
-system("python3 compute_error.py" + " " + str(N))
 
-print("Errors are computed, removing .txt files containing the computed solutions...")
+print("Finished, removing unecessary .txt files...")
 #Remove txt-files to clear up space .
 for n in number_of_gridpoints:
-    system("rm" + " " + "solution_part_b_n_" + str(n) + ".txt")
+    filename_solution = "solution_part_b_n_" + str(n) + ".txt"
+    filename_errors = "errors_n_" + str(n) + ".txt"
+    filename_time = "timeused_" + str(n) + ".txt"
+    system("rm" + " " + filename_solution + " " + filename_errors + " " + filename_time)
 
 print("Done")

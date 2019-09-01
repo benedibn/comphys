@@ -6,7 +6,7 @@
 #include "time.h"
 
 using namespace std;
-ofstream ofile;
+ofstream ofile_solution, ofile_errors, ofile_time;
 
 //double f(double); //Declaration of the RHS of the differential equation to be solved.
 void f(double, double, double&);
@@ -15,14 +15,17 @@ void Forward_substitutionLU(double*, double*, double*, int);
 void Back_substitutionLU(double*, double*, double*, double*, int);
 void Forward_substitution(double*, double*, double*, double*, int);
 void Back_substitution(double*, double*, double*, double*, int);
-void write_to_file(double*, char*, double, int);
+void closed_form_solution(double, double&);
+void compute_errors(double*, double*, double*, int);
 
 int main(int argc, char* argv[]){
   //Declaration of variables.
   int n = atoi(argv[1]);        //Number of grid points
-  char *outfilename_solution;            //Declaration of variable we want to write v(x) to.
+  char *outfilename_solution, *outfilename_errors, *outfilename_time; //Declaration of filenames
   outfilename_solution = argv[2];        //The actual filename of the file we'll write v(x) to.
-  double *a, *b, *c, *d, *l, *u, *q, *v, *y;    //Declaration of pointers to represent vectors.
+  outfilename_errors = argv[3];          //Filename we'll write the computed relative errors to.
+  outfilename_time = argv[4];
+  double *a, *b, *c, *d, *l, *u, *q, *v, *y, *DE_solution, *errors;    //Declaration of pointers to represent vectors.
   double h;                                     //Declaration of stepsize defined by the start_point, end_point and number of grid points n.
   double start_point = 0.0;
   double end_point = 1.0;
@@ -39,10 +42,8 @@ int main(int argc, char* argv[]){
   q = new double[n];
   v = new double[n];
   y = new double[n];
-
-  //Used to time how long the program takes to finish.
-  clock_t start, finish;
-  start = clock();
+  DE_solution = new double[n];
+  errors = new double[n];
 
   //Filling the arrays with the necessary values:
   double h_squared = h*h; //Multiplication factor that reduces number of flops in the for-loop.
@@ -53,7 +54,11 @@ int main(int argc, char* argv[]){
     double x = ((double) i + 1.0)*h;
     //q[i] = f(i*h)*h*h;  //RHS of the matrix equation.
     f(x, h_squared, q[i]); //Call by reference to speed up execution.
+    closed_form_solution(x, DE_solution[i]);
   }
+
+  clock_t start, finish;    //Declaration of variables to time the main algorithm
+  start = clock();          //Starts the clock.
 
   //Main algorithm:
 
@@ -68,13 +73,38 @@ int main(int argc, char* argv[]){
   //Back_substitutionLU(v, y, u, d, n);
   Back_substitution(v, b, c, q, n);
 
-  //Compute the time interval the main algorithm took to complete.
-  finish = clock();
-  double timeused = (double) (finish-start)/(CLOCKS_PER_SEC);
-  cout << "Total time = " << timeused << " s" << endl;
 
-  //Write result to file.
-  write_to_file(v, outfilename_solution, timeused, n);
+  //Compute the time interval the main algorithm took to complete.
+  finish = clock();     //Stops the clock
+  double timeused = (double) (finish-start)/(CLOCKS_PER_SEC);   //Computes the time elapsed for the main algorithm to finish
+  cout << "Total time = " << timeused << " s" << endl;          //Prints the time elapsed to screen.
+  //Writes the time elapsed to a file
+  ofile_time.open(outfilename_time);
+  ofile_time << timeused << endl;
+  ofile_time.close();
+
+
+  //Compute errors
+  compute_errors(errors, v, DE_solution, n);
+
+  //Write computed solution and computed relative errors to their own files.
+  ofile_solution.open(outfilename_solution);
+  ofile_errors.open(outfilename_errors);
+  for (int i = 0; i < n; i++){
+    ofile_solution << v[i] << endl;
+    ofile_errors << errors[i] << endl;
+  }
+  ofile_solution.close();
+  ofile_errors.close();
+  delete[] v;
+  delete[] errors;
+
+
+  //Write the time elapsed to a file
+  ofile_time.open(outfilename_time);
+  ofile_time << timeused << endl;
+  ofile_time.close();
+
   return 0;
 }
 
@@ -116,7 +146,7 @@ void Forward_substitutionLU(double* y, double* q, double* l, int n){
 }
 
 void Back_substitutionLU(double* v, double* y, double* u, double* d, int n){
-  for (int i = n-1; i > 0; i--){
+  for (int i = n-1; i >= 0; i--){
     if (i == n-1){
       v[i] = y[i]/d[i];
     }
@@ -129,7 +159,6 @@ void Back_substitutionLU(double* v, double* y, double* u, double* d, int n){
   delete[] y;
   delete[] d;
   delete[] u;
-
   return;
 }
 
@@ -139,12 +168,11 @@ void Forward_substitution(double* a, double* b, double* c, double* y, int n){
     y[i] -= a[i-1]*y[i-1]/b[i-1];
   }
   delete[] a;
-
   return;
 }
 
 void Back_substitution(double* x, double* b, double* c, double* y, int n){
-  for (int i = n-1; i > 0; i--){
+  for (int i = n-1; i >= 0; i--){
     if (i == n-1){
       x[i] = y[i]/b[i];
     }
@@ -156,24 +184,24 @@ void Back_substitution(double* x, double* b, double* c, double* y, int n){
   delete[] b;
   delete[] c;
   delete[] y;
-
   return;
 }
 
-void write_to_file(double* v, char* outfilename, double timeused, int n){
-  ofile.open(outfilename);
-  ofile << timeused << endl;
-  for (int i = 0; i < n; i++){
-    ofile << v[i] << endl;
-  }
-  ofile.close();
-
-  delete[] v;
-  return;
-
-}
 
 void f(double x, double h, double& vector_element){
    vector_element = 100*exp(-10*x)*h;
    return;
+}
+
+
+void closed_form_solution(double x, double& DE_solution){
+  DE_solution = 1 - (1 - exp(-10))*x - exp(-10*x);
+  return;
+}
+
+void compute_errors(double* errors, double* v, double* DE_solution, int n){
+  for (int i = 0; i < n; i++){
+    errors[i] = log10(abs((v[i] - DE_solution[i])/DE_solution[i]));
+  }
+  return;
 }

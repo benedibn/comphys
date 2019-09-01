@@ -269,6 +269,15 @@ so the general algorithm for the back-substitution is
 	x_i = \frac{q_i - c_ix_{i+1}}{b_i},\qquad \text{for} \qquad i = n-1, n-2, ...,1.
 \end{gather}
 
+For our particular matrix, we know that $b_i = 2$ and $c_i = a_i = -1$, so we can specialize the algorithm. To see this, we first motivate the formula by 
+\begin{gather}
+	b_1 = b = 2, \\
+	b_2 = b - 1/b_1 = 2 - \frac{1}{2} = \frac{3}{2},\\
+	b_3 = b - 1/b_2 = 2 -\frac{1}{3/2} = 2 - \frac{2}{3} = \frac{4}{3},\\
+	\vdots \\
+	b_i = \frac{i+1}{i}, \qquad \text{for} \qquad i = 1,2,...,n.
+\end{gather}
+
 
 
 To this end we will develop an algorithm based on the LU-decomposition $A = LU$:
