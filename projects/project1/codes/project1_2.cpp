@@ -4,11 +4,19 @@
 #include <fstream>
 #include <iomanip>
 #include "time.h"
-#include "functions.h"
 
 using namespace std;
 ofstream ofile_solution, ofile_errors, ofile_time;
 
+//double f(double); //Declaration of the RHS of the differential equation to be solved.
+void f(double, double, double&);
+void LU_decomposition(double*, double*, double*, double*, double*, double*, int);
+void Forward_substitutionLU(double*, double*, double*, int);
+void Back_substitutionLU(double*, double*, double*, double*, int);
+void Forward_substitution(double*, double*, double*, double*, int);
+void Back_substitution(double*, double*, double*, double*, int);
+void closed_form_solution(double, double&);
+void compute_errors(double*, double*, double*, int);
 
 int main(int argc, char* argv[]){
   //Declaration of variables.
@@ -53,20 +61,17 @@ int main(int argc, char* argv[]){
   start = clock();          //Starts the clock.
 
   //Main algorithm:
-  //Specialized algorithm
-  SpecialThomas(q, v, n);
-
 
   //Step 1: LU-decomposition of A on the form A = LU.
   //LU_decomposition(a, b, c, d, l, u, n);
 
   //Step 2: Forward substituion, solving Ly = q
   //Forward_substitutionLU(y, q, l, n);
-  //Forward_substitution(a, b, c, q, n);
+  Forward_substitution(a, b, c, q, n);
 
   //Step 3: Back-substitution, solving Uv = y
   //Back_substitutionLU(v, y, u, d, n);
-  //Back_substitution(v, b, c, q, n);
+  Back_substitution(v, b, c, q, n);
 
 
   //Compute the time interval the main algorithm took to complete.
@@ -101,4 +106,102 @@ int main(int argc, char* argv[]){
   ofile_time.close();
 
   return 0;
+}
+
+
+void LU_decomposition(double* a, double* b, double* c, double* d, double* l, double* u, int n){
+  for (int i = 0; i < n; i++){
+    if (i == 0){
+      d[i] = b[i];
+      u[i] = c[i];
+    }
+    else{
+      l[i] = a[i-1]/d[i-1];
+      d[i] = b[i] - l[i]*u[i-1];
+      u[i] = c[i];
+    }
+  }
+  //No more use for a, b and c so we deallocate their memory here.
+  delete[] a;
+  delete[] b;
+  delete[] c;
+
+  return;
+}
+
+void Forward_substitutionLU(double* y, double* q, double* l, int n){
+  for (int i = 0; i < n; i++){
+    if (i == 0){
+      y[i] = q[i];
+    }
+    else{
+      y[i] = q[i] - l[i]*y[i-1];
+    }
+  }
+
+  //q and l has served its purpose and is thus deallocated.
+  delete[] q;
+  delete[] l;
+  return;
+}
+
+void Back_substitutionLU(double* v, double* y, double* u, double* d, int n){
+  for (int i = n-1; i >= 0; i--){
+    if (i == n-1){
+      v[i] = y[i]/d[i];
+    }
+    else{
+      v[i] = (y[i] - u[i]*v[i+1])/d[i];
+    }
+  }
+
+  //Deallocates y and d as their no longer needed.
+  delete[] y;
+  delete[] d;
+  delete[] u;
+  return;
+}
+
+void Forward_substitution(double* a, double* b, double* c, double* y, int n){
+  for (int i = 1; i < n; i++){
+    b[i] -= a[i-1]*c[i-1]/b[i-1];
+    y[i] -= a[i-1]*y[i-1]/b[i-1];
+  }
+  delete[] a;
+  return;
+}
+
+void Back_substitution(double* x, double* b, double* c, double* y, int n){
+  for (int i = n-1; i >= 0; i--){
+    if (i == n-1){
+      x[i] = y[i]/b[i];
+    }
+    else{
+      x[i] = (y[i]-c[i]*x[i+1])/b[i];
+    }
+  }
+
+  delete[] b;
+  delete[] c;
+  delete[] y;
+  return;
+}
+
+
+void f(double x, double h, double& vector_element){
+   vector_element = 100*exp(-10*x)*h;
+   return;
+}
+
+
+void closed_form_solution(double x, double& DE_solution){
+  DE_solution = 1 - (1 - exp(-10))*x - exp(-10*x);
+  return;
+}
+
+void compute_errors(double* errors, double* v, double* DE_solution, int n){
+  for (int i = 0; i < n; i++){
+    errors[i] = log10(abs((v[i] - DE_solution[i])/DE_solution[i]));
+  }
+  return;
 }

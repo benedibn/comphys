@@ -4,8 +4,10 @@ N = int(sys.argv[1])
 
 #Compile and execute program:
 print("Compiling code...")
-system("c++ -O3 -c project1.cpp")
-system("c++ -O3 -o project1.exe project1.o")
+system("c++ -O3 -c project1.cpp functions.cpp")
+system("c++ -O3 -o project1.exe project1.o functions.o")
+#system("c++ -O3 -c project1_2.cpp")
+#system("c++ -O3 -o project1_2.exe project1_2.o")
 print("Compilation finished, executing program...")
 
 

@@ -10,7 +10,7 @@ for n in number_of_gridpoints:
     filename_errors = "errors_n_" + str(n) + ".txt"
     errors = []
     with open(filename_errors, "r") as infile:
-        timeused = float(infile.readline())   #Time used to run the c++ program.
+        #timeused = float(infile.readline())   #Time used to run the c++ program.
         lines = infile.readlines()
         for line in lines:
             numbers = line.split()
