@@ -89,12 +89,16 @@
                                           % marks the end of the abstracthttps://github.com/reneaas/fys2160.git
 \maketitle                                % creates the title, author, date & abstract
 
+\section{Introduction}
+Differential equations show up in all branches of physics and while there exists a subset of such equations that permit closed-form solutions, the differential equations that emerge from the vast majority of real world problems require us to resort to approximation schemes because no such closed-form solution exist within the current state of mathematics. This lack of existence prompts us to develop and estimate the error of numerical methods in order to study and assert the validity of our results. 
+
+In this article we shall study, compare and contrast three methods of solving Poisson's equation by converting the problem into a linear tridiagonal matrix equation. The first algorithm we'll look at is a general one developed to solve a tridiagonal matrix equation where we do not assume much about the matrix elements aside from requiring that the matrix is indeed invertible. We will further specialize the algorithm for our particular matrix and benchmark the two methods for comparative purposes. We will also compare these two methods towards a more intricate method using LU-decomposition in combination with the normal forward- and backward-substitutions required by the special form of Gaussian elimination we'll need. We'll then compare these methods against using solvers from the well-known package armadillo.
 \section{Method}
-We're going to solve the differential equation 
+The general form of the differential equation with Dirichlet boundary conditions we wish to solve is 
 \begin{equation}\label{diff_eq}
 	-u''(x) = f(x), \quad x \in (0,1), \quad u(0)=u(1)=0.
 \end{equation}
-To this end, we'll derive an approximation to the second derivative of $u(x)$ before we estimate the total error of the approximation. 
+To this end, we'll derive an approximation to the second derivative of a general continuous function $f(x)$ before we estimate the total error of the approximation. For simplicity, we'll assume that this function is analytic, that is, it has derivatives of all orders.
 \subsection{Derivation of the approximation scheme and an upper-bound on its total error}
 
 We start by Taylor expanding about some point $x$ 
@@ -103,7 +107,7 @@ We start by Taylor expanding about some point $x$
 \end{equation}
 and 
 \begin{equation}
-	f(x-hh) = f(x) - hf'(x) + \frac{h^2}{2!}f''(x) - \frac{h^3}{3!}f'''(x) + \frac{h^4}{4!}f^{(4)}(\xi_2),
+	f(x-h) = f(x) - hf'(x) + \frac{h^2}{2!}f''(x) - \frac{h^3}{3!}f'''(x) + \frac{h^4}{4!}f^{(4)}(\xi_2),
 \end{equation}
 where $\xi_1 \in (x,x+h)$ and $\xi_2 \in (x-h,x)$. Adding the two equations and rearranging a bit we get 
 \begin{equation}
@@ -168,7 +172,7 @@ which may be rearranged into
 \begin{equation}\label{approx_1}
 	2v_i - v_{i+1} - v_{i-1} = f_ih^2 \equiv q_i.
 \end{equation}
-From \eqref{approx_1} we can write 
+From \eqref{approx_1} we can rewrite this into a matrix equation as follows 
 \begin{equation}
 	\begin{pmatrix}
 	2v_1 - v_2 \\ 
@@ -188,9 +192,9 @@ From \eqref{approx_1} we can write
 	\end{pmatrix}
 	= \begin{pmatrix}
 	q_1 \\ q_2 \\ \vdots \\ q_n
-	\end{pmatrix}
+	\end{pmatrix}.
 \end{equation}
-To this end we'll first develop a general algorithm based on forward- and backward substitution to solve the equation $A\vb*{x} = \vb*{q}$. 
+To solve the matrix equation we'll first develop a general algorithm based on forward- and backward substitution to solve the equation $A\vb*{x} = \vb*{q}$. 
 Performing one step of Gaussian elimination on the following matrix yields 
 \begin{equation}
 	A =
@@ -275,6 +279,8 @@ Once this process in completed, we need to perform back-substitution to find $\v
 	\end{pmatrix},
 \end{equation}
 so the general algorithm for the back-substitution is 
+
+
 \begin{gather}
 	x_i = \frac{q_i}{b_i}, \qquad \text{for} \qquad i = n,\\
 	x_i = \frac{q_i - c_ix_{i+1}}{b_i},\qquad \text{for} \qquad i = n-1, n-2, ...,1.
@@ -298,7 +304,7 @@ For the solution $\vb*{x}$ we get the recursive relations
 	x_i = \frac{i}{i+1}(q_i + x_{i+1}), \qquad \text{for} \qquad i = n-1,n-2,...,1.
 \end{gather}
 
-\clearpage
+\subsection{LU-decomposition, Forward- and Back-substitution}
 To this end we will develop an algorithm based on the LU-decomposition $A = LU$:
 \begin{equation} A= 
 	\begin{pmatrix}
@@ -427,6 +433,7 @@ $c_1 = c_2 = \cdots = c_n \equiv c$. But since $a = c$, we can ignore the last a
 	d_i = b_i - \ell_iu_i = b - \ell_ia = b - \frac{a^2}{d_{i-1}} \qquad \text{for} \qquad 1 < i \leq n.
 \end{gather}
 
+\section{Results}
 
 
 \end{document} 

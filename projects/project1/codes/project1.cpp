@@ -53,21 +53,26 @@ int main(int argc, char* argv[]){
   start = clock();          //Starts the clock.
 
   //Main algorithm:
+  /*
+  Forward_substitution(a, b, c, q, n);    //Step 1: Forward substitution
+  Back_substitution(v, b, c, q, n);       //Step 2: Back-substitution
+  */
+
+
   //Specialized algorithm
   SpecialThomas(q, v, n);
 
-
+  /*
+  //Thomas algorithm with LU-decomposition
   //Step 1: LU-decomposition of A on the form A = LU.
-  //LU_decomposition(a, b, c, d, l, u, n);
+  LU_decomposition(a, b, c, d, l, u, n);
 
   //Step 2: Forward substituion, solving Ly = q
-  //Forward_substitutionLU(y, q, l, n);
-  //Forward_substitution(a, b, c, q, n);
+  Forward_substitutionLU(y, q, l, n);
 
   //Step 3: Back-substitution, solving Uv = y
-  //Back_substitutionLU(v, y, u, d, n);
-  //Back_substitution(v, b, c, q, n);
-
+  Back_substitutionLU(v, y, u, d, n);
+  */
 
   //Compute the time interval the main algorithm took to complete.
   finish = clock();     //Stops the clock

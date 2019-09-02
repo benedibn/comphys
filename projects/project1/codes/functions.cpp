@@ -104,6 +104,7 @@ void Back_substitution(double* x, double* b, double* c, double* y, int n){
 
 //Specialized algorithm to solve the matrix eq Ax = b of a tridiagonal matrix
 //where all the elements of the diagonal are equal, and the off-diagonal elements are equal.
+/*
 void SpecialThomas(double* y, double* x, int n){
   for (int i = 1; i < n; i++){
     y[i] = y[i] + (((double) i)/( (double) (i+1)))*y[i-1];
@@ -115,6 +116,24 @@ void SpecialThomas(double* y, double* x, int n){
     }
     else{
       x[i] = (((double)(i+1))/((double)(i+2)))*(y[i] + x[i+1]);
+    }
+  }
+  delete[] y;
+  return;
+}
+*/
+
+void SpecialThomas(double* y, double* x, int n){
+  for (int i = 1; i < n; i++){
+    y[i] = y[i] + (((double) i)/( (double) (i+1)))*y[i-1];
+    //cout << y[i]<< endl;
+  }
+  for (int i = n-1; i >= 0; i--){
+    if (i == n-1){
+      x[i] = (((double) n)/((double) (n+1)))*y[i];
+    }
+    else{
+      x[i] = (((double) (i+1))/((double) (i+2)))*(y[i] + x[i+1]);
     }
   }
   delete[] y;
