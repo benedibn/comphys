@@ -14,9 +14,11 @@ int main(int argc, char* argv[]){
   //Declaration of variables.
   int n = atoi(argv[1]);        //Number of grid points
   char *outfilename_solution, *outfilename_errors, *outfilename_time; //Declaration of filenames
+  string which_algorithm;
   outfilename_solution = argv[2];        //The actual filename of the file we'll write v(x) to.
   outfilename_errors = argv[3];          //Filename we'll write the computed relative errors to.
   outfilename_time = argv[4];
+  which_algorithm = string(argv[5]);
   double *a, *b, *c, *d, *l, *u, *q, *v, *y, *DE_solution, *errors;    //Declaration of pointers to represent vectors.
   double h;                                     //Declaration of stepsize defined by the start_point, end_point and number of grid points n.
   double start_point = 0.0;
@@ -53,14 +55,22 @@ int main(int argc, char* argv[]){
   start = clock();          //Starts the clock.
 
   //Main algorithm:
-  /*
-  Forward_substitution(a, b, c, q, n);    //Step 1: Forward substitution
-  Back_substitution(v, b, c, q, n);       //Step 2: Back-substitution
-  */
+  string general_algorithm = "general_algorithm";
+  string special_algorithm = "special_algorithm";
+  if (which_algorithm == general_algorithm){
+    Forward_substitution(a, b, c, q, n);    //Step 1: Forward substitution
+    Back_substitution(v, b, c, q, n);       //Step 2: Back-substitution
+    cout << "Running general algorithm" << endl;
+  }
+  if (which_algorithm == special_algorithm){
+    SpecialThomas(q, v, n);
+    cout << "Running special algorithm" << endl;
+  }
+
 
 
   //Specialized algorithm
-  SpecialThomas(q, v, n);
+  //SpecialThomas(q, v, n);
 
   /*
   //Thomas algorithm with LU-decomposition

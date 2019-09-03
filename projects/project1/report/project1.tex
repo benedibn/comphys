@@ -433,7 +433,20 @@ $c_1 = c_2 = \cdots = c_n \equiv c$. But since $a = c$, we can ignore the last a
 	d_i = b_i - \ell_iu_i = b - \ell_ia = b - \frac{a^2}{d_{i-1}} \qquad \text{for} \qquad 1 < i \leq n.
 \end{gather}
 
+As a measure of the error between the closed-form solution $u(x)$ and the approximated solution $v(x)$, we shall use 
+\begin{equation}
+	E(x) = \log_{10}\left(\abs{\frac{u(x)-v(x)}{u(x)}}\right).
+\end{equation}
+
 \section{Results}
+\subsection{The general algorithm}
+Running the general algorithm for $n \in \{10, 100, 1000\}$ gridpoints yielded 
+\begin{figure}[h!]
+	\includegraphics{solution_part_b_n_10_general.png}
+	\includegraphics{solution_part_b_n_10_general.png}
+	\caption{The figure shows the numerical solution $v(x)$ and the closed-form solution $u(x)$ over the interval $x\in(0,1)$.}
+\end{figure}
+
 
 
 \end{document} 

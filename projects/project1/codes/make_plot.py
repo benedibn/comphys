@@ -5,6 +5,7 @@ import sys
 
 #filename  = str(input("Type filename with extension: "))
 filename = str(sys.argv[1])
+which_algorithm = str(sys.argv[2])
 v = []
 with open(filename, "r") as infile:
     lines = infile.readlines()
@@ -25,19 +26,17 @@ n = len(v)
 h = 1/(float(n) + 1)
 x = [float((i+1)*h) for i in range(n)]
 x = np.array(x)
-#x = np.linspace(0,1,n+1)
-#x = [(i+1)*h for i in range(n)]
-#x = np.array(x)
-#X = np.linspace(0,1,1001)
-print(x[0:2])
 
-plt.plot(x,v, label="Numerical solution with n = " + str(n))
-plt.plot(x,u(x), label="Analytical solution")
+plt.plot(x,v, "-b",label="Numerical solution with n = " + str(n))
+plt.plot(x,u(x), "--r",  label="Analytical solution")
 plt.xlabel("x")
 plt.ylabel("u(x)")
 plt.legend()
 
 figurename = filename.strip(".txt") + ".png"
 plt.savefig(figurename)
-system("mv " + figurename + " ~/Documents/skole/comphys/projects/project1/codes/plots/plots_partb")
+if which_algorithm == "general_algorithm":
+    system("mv " + figurename + " " + "~/Documents/skole/comphys/projects/project1/codes/results/general_algorithm/plots")
+if which_algorithm == "special_algorithm":
+    system("mv " + figurename + " " + "~/Documents/skole/comphys/projects/project1/codes/results/special_algorithm/plots")
 plt.close()
