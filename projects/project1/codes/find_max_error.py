@@ -10,6 +10,7 @@ which_algorithm = str(sys.argv[2])
 
 
 number_of_gridpoints = [int(10**(i)) for i in range(1,N+1)]
+
 max_error = []
 if which_algorithm == "general_algorithm":
     for n in number_of_gridpoints:

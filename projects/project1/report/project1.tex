@@ -19,9 +19,9 @@
 \usepackage{tikz}             % draw figures manually
 \usepackage{listings}         % display code
 \usepackage{subfigure}        % imports a lot of cool and useful figure commands
-%\usepackage{float}
-\usepackage{algorithmic}
+\usepackage{float}
 \usepackage{algorithm}
+\usepackage[noend]{algpseudocode}
 % defines the color of hyperref objects
 % Blending two colors:  blue!80!black  =  80% blue and 20% black
 \hypersetup{ % this is just my personal choice, feel free to change things
@@ -90,11 +90,11 @@
 \maketitle                                % creates the title, author, date & abstract
 
 \section{Introduction}
-Differential equations show up in all branches of physics and while there exists a subset of such equations that permit closed-form solutions, the differential equations that emerge from the vast majority of real world problems require us to resort to approximation schemes because no such closed-form solution exist within the current state of mathematics. This lack of existence prompts us to develop and estimate the error of numerical methods in order to study and assert the validity of our results. 
+Differential equations show up in all branches of physics. While there exists a subset of such equations that permit closed-form solutions, the differential equations that emerge from the vast majority of real world problems require us to resort to approximation schemes simply because no such solution exists. This lack of existence prompts us to develop and estimate the error of numerical methods in order to study and assert the validity of our results. 
 
-In this article we shall study, compare and contrast three methods of solving Poisson's equation by converting the problem into a linear tridiagonal matrix equation. The first algorithm we'll look at is a general one developed to solve a tridiagonal matrix equation where we do not assume much about the matrix elements aside from requiring that the matrix is indeed invertible. We will further specialize the algorithm for our particular matrix and benchmark the two methods for comparative purposes. We will also compare these two methods towards a more intricate method using LU-decomposition in combination with the normal forward- and backward-substitutions required by the special form of Gaussian elimination we'll need. We'll then compare these methods against using solvers from the well-known package armadillo.
+In this article we shall study, compare and contrast three methods of solving Poisson's equation by converting the problem into a linear tridiagonal matrix equation. The first algorithm we'll look at is a general one developed to solve a tridiagonal matrix equation where we do not assume much about the matrix elements aside from requiring that the matrix is indeed invertible. We will further specialize the algorithm for our particular matrix and benchmark the two methods for comparative purposes. We will also compare these two methods towards a more intricate method using LU-decomposition in combination with the normal forward- and backward-substitutions required by the special form of Gaussian elimination we'll need. We'll then compare these methods against solvers from the well-known package armadillo.
 \section{Method}
-The general form of the differential equation with Dirichlet boundary conditions we wish to solve is 
+The general form of the differential equation (DE) with Dirichlet boundary conditions we wish to solve is 
 \begin{equation}\label{diff_eq}
 	-u''(x) = f(x), \quad x \in (0,1), \quad u(0)=u(1)=0.
 \end{equation}
@@ -117,7 +117,7 @@ To find the signed truncation error, we rewrite the equation as
 \begin{equation}
 	f''(x) - \frac{f(x+h)-2f(x) + f(x-h)}{h^2} = -\frac{h^2}{24}\left[f^{(4)}(\xi_1)-f^{(4)}(\xi_2)\right].
 \end{equation}
-Before we proceed with the error analysis, we might as well pick $\xi \in (x-h,x+h)$ such that $f(\xi) = \max \{f(\xi_1),f(\xi_2)\}$ and multiply it by a factor $2$ at the RHS, that is
+Before we proceed with the error analysis, we might as well pick $\xi \in (x-h,x+h)$ such that $f(\xi) = \max \{f(\xi_1),f(\xi_2)\}$ and multiply it by a factor $2$ at the right-hand side (RHS), that is
 \begin{equation}
 	f''(x) - \frac{f(x+h)-2f(x) + f(x-h)}{h^2} = -\frac{h^2}{12}f(\xi).
 \end{equation}
@@ -164,7 +164,12 @@ where we set $\epsilon_M = 10^{-15}$. For our purposes, it's more convenient to 
 
 
 \subsection{Approximate solution of the differential equation by the Thomas algorithm}
-We'll approximate this differential equation by a function $v(x) \approx u(x)$. By the derivation above, its clear that we can write the differential eq. for each $x_i$ as 
+From the arguments above it's obvious that we can approximate the second derivative of a function $f(x)$ by 
+\begin{equation}
+	f''(x_i) \approx \frac{f(x_i+h) - 2f(x_i) + f(x_i-h)}{h^2} \equiv \frac{f_{i+1} - f_i + f_{i-1}}{h^2},
+\end{equation}
+
+Now, for our particular DE, we want to approximate the true solution $u(x)$ by the a function $v(x)$. Using the discretization from above, we can thus rewrite our DE as 
 \begin{equation}
 	-\frac{-v_{i+1}+v_{i-1} - 2v_i}{h^2} = f_i, \quad i=1,2,...,n,
 \end{equation}
@@ -241,16 +246,8 @@ and at this point it's pretty obvious that the general pattern for the forward-s
 	b_i = b_i - \frac{a_{i-1}}{b_{i-1}}c_{i-1}, \qquad \text{for} \qquad i=2,3,...,n,\\
 	q_i = y_i - \frac{a_{i-1}}{b_{i-1}}y_{i-1}, \qquad \text{for} \qquad i=2,3,...,n,
 \end{gather}
-where the second equation is simply performing the exact same operation on the RHS of the equation. We summarize the algorithm as follows
-\begin{algorithm}[H]
-	\caption{Forward Substitution}
-	\begin{algorithmic}
-		\FOR{$i = 2,3,...,n$}
-		\STATE $b_i = b_i - \frac{a_{i-1}}{b_{i-1}}c_{i-1}$,
-		\STATE $q_i = y_i - \frac{a_{i-1}}{b_{i-1}}y_{i-1}$
-		\ENDFOR
-	\end{algorithmic}
-\end{algorithm}
+where the second equation is simply performing the exact same operation on the RHS of the equation. 
+
 Once this process in completed, we need to perform back-substitution to find $\vb*{x}$. At this point our equation will look as follows: 
 \begin{equation}
 		\begin{pmatrix}
@@ -437,6 +434,7 @@ As a measure of the error between the closed-form solution $u(x)$ and the approx
 \begin{equation}
 	E(x) = \log_{10}\left(\abs{\frac{u(x)-v(x)}{u(x)}}\right).
 \end{equation}
+
 
 \section{Results}
 \subsection{The general algorithm}

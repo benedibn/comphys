@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Debian) (preloaded format=pdflatex 2019.8.17)  3 SEP 2019 02:12
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Debian) (preloaded format=pdflatex 2019.8.17)  4 SEP 2019 04:12
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -2072,37 +2072,46 @@ Package: subfigure 2002/03/15 v2.1.5 subfigure package
 \subfig@top=\skip60
 \subfig@bottom=\skip61
 )
-(/usr/share/texlive/texmf-dist/tex/latex/algorithms/algorithmic.sty
-Package: algorithmic 2009/08/24 v0.1 Document Style `algorithmic'
-
-(/usr/share/texlive/texmf-dist/tex/latex/base/ifthen.sty
-Package: ifthen 2014/09/29 v1.1c Standard LaTeX ifthen package (DPC)
-)
-\c@ALC@unique=\count303
-\c@ALC@line=\count304
-\c@ALC@rem=\count305
-\c@ALC@depth=\count306
-\ALC@tlm=\skip62
-\algorithmicindent=\skip63
-)
-(/usr/share/texlive/texmf-dist/tex/latex/algorithms/algorithm.sty
-Package: algorithm 2009/08/24 v0.1 Document Style `algorithm' - floating enviro
-nment
-
 (/usr/share/texlive/texmf-dist/tex/latex/float/float.sty
 Package: float 2001/11/08 v1.3d Float enhancements (AL)
-\c@float@type=\count307
+\c@float@type=\count303
 \float@exts=\toks37
 \float@box=\box72
 \@float@everytoks=\toks38
 \@floatcapt=\box73
 )
+(/usr/share/texlive/texmf-dist/tex/latex/algorithms/algorithm.sty
+Package: algorithm 2009/08/24 v0.1 Document Style `algorithm' - floating enviro
+nment
+
+(/usr/share/texlive/texmf-dist/tex/latex/base/ifthen.sty
+Package: ifthen 2014/09/29 v1.1c Standard LaTeX ifthen package (DPC)
+)
 \@float@every@algorithm=\toks39
-\c@algorithm=\count308
+\c@algorithm=\count304
+)
+(/usr/share/texlive/texmf-dist/tex/latex/algorithmicx/algpseudocode.sty
+Package: algpseudocode 
+
+(/usr/share/texlive/texmf-dist/tex/latex/algorithmicx/algorithmicx.sty
+Package: algorithmicx 2005/04/27 v1.2 Algorithmicx
+
+Document Style algorithmicx 1.2 - a greatly improved `algorithmic' style
+\c@ALG@line=\count305
+\c@ALG@rem=\count306
+\c@ALG@nested=\count307
+\ALG@tlm=\skip62
+\ALG@thistlm=\skip63
+\c@ALG@Lnr=\count308
+\c@ALG@blocknr=\count309
+\c@ALG@storecount=\count310
+\c@ALG@tmpcounter=\count311
+\ALG@tmplength=\skip64
+)
+Document Style - pseudocode environments for use with the `algorithmicx' style
 )
 Package hyperref Info: Option `colorlinks' set `true' on input line 31.
-
-(/usr/share/texlive/texmf-dist/tex/latex/listings/lstlang1.sty
+ (/usr/share/texlive/texmf-dist/tex/latex/listings/lstlang1.sty
 File: lstlang1.sty 2015/06/04 1.6 listings language file
 )
 Class revtex4-1 Info: Patching LaTeX tabular. on input line 84.
@@ -2135,16 +2144,16 @@ LaTeX Font Info:    ... okay on input line 84.
 
 (/usr/share/texlive/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count309
+\scratchcounter=\count312
 \scratchdimen=\dimen256
 \scratchbox=\box74
-\nofMPsegments=\count310
-\nofMParguments=\count311
+\nofMPsegments=\count313
+\nofMParguments=\count314
 \everyMPshowfont=\toks40
-\MPscratchCnt=\count312
+\MPscratchCnt=\count315
 \MPscratchDim=\dimen257
-\MPnumerator=\count313
-\makeMPintoPDFobject=\count314
+\MPnumerator=\count316
+\makeMPintoPDFobject=\count317
 \everyMPtoPDFconversion=\toks41
 ) (/usr/share/texlive/texmf-dist/tex/latex/oberdiek/epstopdf-base.sty
 Package: epstopdf-base 2016/05/15 v2.6 Base part for package epstopdf
@@ -2172,7 +2181,7 @@ Package: nameref 2016/05/21 v2.44 Cross-referencing by name of section
 (/usr/share/texlive/texmf-dist/tex/generic/oberdiek/gettitlestring.sty
 Package: gettitlestring 2016/05/16 v1.5 Cleanup title references (HO)
 )
-\c@section@level=\count315
+\c@section@level=\count318
 )
 LaTeX Info: Redefining \ref on input line 84.
 LaTeX Info: Redefining \pageref on input line 84.
@@ -2183,7 +2192,7 @@ LaTeX Info: Redefining \nameref on input line 84.
 \openout5 = `project1.out'.
 
  ABD: EveryShipout initializing macros
-\c@lstlisting=\count316
+\c@lstlisting=\count319
 Class revtex4-1 Info: Taking \maketitle back from hyperref on input line 84.
 \openout3 = `project1Notes.bib'.
 
@@ -2196,24 +2205,21 @@ LaTeX Font Info:    Try loading font information for U+msb on input line 98.
 
 (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
-) [1{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}] [2]
-Package hyperref Info: bookmark level for unknown algorithm defaults to 0 on in
-put line 246.
- [3] [4]
-<solution_part_b_n_10_general.png, id=119, 462.528pt x 346.896pt>
+) [1{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}] [2] [3] [4]
+<solution_part_b_n_10_general.png, id=107, 462.528pt x 346.896pt>
 File: solution_part_b_n_10_general.png Graphic file (type png)
 <use solution_part_b_n_10_general.png>
 Package pdftex.def Info: solution_part_b_n_10_general.png  used on input line 4
-45.
+43.
 (pdftex.def)             Requested size: 462.52686pt x 346.89514pt.
 File: solution_part_b_n_10_general.png Graphic file (type png)
 <use solution_part_b_n_10_general.png>
 Package pdftex.def Info: solution_part_b_n_10_general.png  used on input line 4
-46.
+44.
 (pdftex.def)             Requested size: 462.52686pt x 346.89514pt.
 
 
-LaTeX Warning: Float too large for page by 47.54028pt on input line 448.
+LaTeX Warning: Float too large for page by 47.54028pt on input line 446.
 
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
@@ -2222,53 +2228,47 @@ No file project1.bbl.
 [5]
 
 LaTeX Warning: A float is stuck (cannot be placed); try class option [floatfix]
- on input line 452.
+ on input line 450.
 
 [6pdfTeX warning (ext4): destination with the same identifier (name{figure.1}) 
 has been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.452 \end{document}
+l.450 \end{document}
                      <./solution_part_b_n_10_general.png>]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 452.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 450.
  (./project1.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 452.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 452.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 450.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 450.
 Package rerunfilecheck Info: File `project1.out' has not changed.
 (rerunfilecheck)             Checksum: 253F962B2D0BC3E981A2D2E58EE585A4;620.
  ) 
 Here is how much of TeX's memory you used:
- 28577 strings out of 492982
- 525180 string characters out of 6134896
- 640184 words of memory out of 5000000
- 31718 multiletter control sequences out of 15000+600000
+ 28892 strings out of 492982
+ 530223 string characters out of 6134896
+ 648519 words of memory out of 5000000
+ 32033 multiletter control sequences out of 15000+600000
  539088 words of font info for 55 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 55i,20n,54p,10446b,471s stack positions out of 5000i,500n,10000p,200000b,80000s
-</usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></us
-r/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/shar
-e/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx9.pfb></usr/share/texli
-ve/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/share/texlive/tex
-mf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texlive/texmf-dis
-t/fonts/type1/public/amsfonts/cm/cmmi5.pfb></usr/share/texlive/texmf-dist/fonts
-/type1/public/amsfonts/cm/cmmi6.pfb></usr/share/texlive/texmf-dist/fonts/type1/
-public/amsfonts/cm/cmmi7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/
-amsfonts/cm/cmmi9.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfont
-s/cm/cmmib10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/
-cmr10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr5.pf
-b></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/
-share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/share/te
-xlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr9.pfb></usr/share/texlive/te
-xmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-di
-st/fonts/type1/public/amsfonts/cm/cmsy5.pfb></usr/share/texlive/texmf-dist/font
-s/type1/public/amsfonts/cm/cmsy6.pfb></usr/share/texlive/texmf-dist/fonts/type1
-/public/amsfonts/cm/cmsy7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public
-/amsfonts/cm/cmsy9.pfb>
-Output written on project1.pdf (6 pages, 246961 bytes).
+ 55i,20n,54p,10446b,359s stack positions out of 5000i,500n,10000p,200000b,80000s
+</usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></us
+r/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx9.pfb></usr/share
+/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/share/texli
+ve/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texlive/tex
+mf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/share/texlive/texmf-dist
+/fonts/type1/public/amsfonts/cm/cmmi9.pfb></usr/share/texlive/texmf-dist/fonts/
+type1/public/amsfonts/cm/cmmib10.pfb></usr/share/texlive/texmf-dist/fonts/type1
+/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public
+/amsfonts/cm/cmr5.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfont
+s/cm/cmr7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr
+9.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb>
+</usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/s
+hare/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy9.pfb>
+Output written on project1.pdf (6 pages, 197919 bytes).
 PDF statistics:
- 222 PDF objects out of 1000 (max. 8388607)
- 190 compressed objects within 2 object streams
- 69 named destinations out of 1000 (max. 500000)
+ 193 PDF objects out of 1000 (max. 8388607)
+ 167 compressed objects within 2 object streams
+ 65 named destinations out of 1000 (max. 500000)
  82 words of extra memory for PDF output out of 10000 (max. 10000000)
 
