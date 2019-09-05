@@ -6,9 +6,8 @@ if algorithm == "general":
     which_algorithm = "general_algorithm"
 if algorithm == "special":
     which_algorithm = "special_algorithm"
-
-#which_algorithm = "special_algorithm"
-
+if algorithm == "lu":
+    which_algorithm = "LU"
 
 #Compile and execute program:
 print("Compiling code...")
@@ -32,6 +31,12 @@ for n in number_of_gridpoints:
         filename_time = "timeused_" + str(n) + "_special.txt"
         print("Computing for n = " + str(n))
         system("./project1.exe" + " " + str(n) + " " + filename_solution + " " + filename_errors + " " + filename_time + " " + which_algorithm)
+    if which_algorithm == "LU":
+        filename_solution = "solution_part_b_n_" + str(n) + "_LU.txt"
+        filename_errors = "errors_n_" + str(n) + "_LU.txt"
+        filename_time = "timeused_" + str(n) + "_LU.txt"
+        print("Computing for n = " + str(n))
+        system("./project1.exe" + " " + str(n) + " " + filename_solution + " " + filename_errors + " " + filename_time + " " + which_algorithm)
 
 print("Computations are done, making plots...")
 
@@ -43,6 +48,10 @@ for n in number_of_gridpoints:
         print("Plotting for n = " + str(n))
     if which_algorithm == "special_algorithm":
         filename_solution = "solution_part_b_n_" + str(n) + "_special.txt"
+        system("python3" + " " + "make_plot.py" +  " " + filename_solution + " " + which_algorithm)
+        print("Plotting for n = " + str(n))
+    if which_algorithm == "LU":
+        filename_solution = "solution_part_b_n_" + str(n) + "_LU.txt"
         system("python3" + " " + "make_plot.py" +  " " + filename_solution + " " + which_algorithm)
         print("Plotting for n = " + str(n))
 
@@ -66,6 +75,11 @@ for n in number_of_gridpoints:
         filename_solution = "solution_part_b_n_" + str(n) + "_special.txt"
         filename_errors = "errors_n_" + str(n) + "_special.txt"
         filename_time = "timeused_" + str(n) + "_special.txt"
+        system("rm" + " " + filename_solution + " " + filename_errors + " " + filename_time)
+    if which_algorithm == "LU":
+        filename_solution = "solution_part_b_n_" + str(n) + "_LU.txt"
+        filename_errors = "errors_n_" + str(n) + "_LU.txt"
+        filename_time = "timeused_" + str(n) + "_LU.txt"
         system("rm" + " " + filename_solution + " " + filename_errors + " " + filename_time)
 
 print("Done")

@@ -39,4 +39,6 @@ if which_algorithm == "general_algorithm":
     system("mv " + figurename + " " + "~/Documents/skole/comphys/projects/project1/codes/results/general_algorithm/plots")
 if which_algorithm == "special_algorithm":
     system("mv " + figurename + " " + "~/Documents/skole/comphys/projects/project1/codes/results/special_algorithm/plots")
+if which_algorithm == "LU":
+    system("mv " + figurename + " " + "~/Documents/skole/comphys/projects/project1/codes/results/LU/plots")
 plt.close()

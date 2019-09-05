@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Debian) (preloaded format=pdflatex 2019.8.17)  4 SEP 2019 04:12
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Debian) (preloaded format=pdflatex 2019.8.17)  4 SEP 2019 13:55
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -2247,7 +2247,7 @@ Package rerunfilecheck Info: File `project1.out' has not changed.
 Here is how much of TeX's memory you used:
  28892 strings out of 492982
  530223 string characters out of 6134896
- 648519 words of memory out of 5000000
+ 648520 words of memory out of 5000000
  32033 multiletter control sequences out of 15000+600000
  539088 words of font info for 55 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191

@@ -46,7 +46,6 @@ int main(int argc, char* argv[]){
     b[i] = 2.0;
     c[i] = -1.0;
     double x = ((double) i + 1.0)*h;
-    //q[i] = f(i*h)*h*h;  //RHS of the matrix equation.
     f(x, h_squared, q[i]); //Call by reference to speed up execution.
     closed_form_solution(x, DE_solution[i]);
   }
@@ -57,6 +56,7 @@ int main(int argc, char* argv[]){
   //Main algorithm:
   string general_algorithm = "general_algorithm";
   string special_algorithm = "special_algorithm";
+  string LU_Thomas = "LU";
   if (which_algorithm == general_algorithm){
     Forward_substitution(a, b, c, q, n);    //Step 1: Forward substitution
     Back_substitution(v, b, c, q, n);       //Step 2: Back-substitution
@@ -66,23 +66,13 @@ int main(int argc, char* argv[]){
     SpecialThomas(q, v, n);
     cout << "Running special algorithm" << endl;
   }
+  if (which_algorithm == LU_Thomas){
+    cout << "Running LU-Thomas" << endl;
+    LU_decomposition(a,b,c,d,l,u,n);      //Step 1: LU-decomposition - A = LU
+    Forward_substitutionLU(y,q,l,n);      //Step 2: Forward-substitution - solves Ly = q
+    Back_substitutionLU(v,y,u,d,n);       //Step 3: Back-substitution - solves Uv = y
+  }
 
-
-
-  //Specialized algorithm
-  //SpecialThomas(q, v, n);
-
-  /*
-  //Thomas algorithm with LU-decomposition
-  //Step 1: LU-decomposition of A on the form A = LU.
-  LU_decomposition(a, b, c, d, l, u, n);
-
-  //Step 2: Forward substituion, solving Ly = q
-  Forward_substitutionLU(y, q, l, n);
-
-  //Step 3: Back-substitution, solving Uv = y
-  Back_substitutionLU(v, y, u, d, n);
-  */
 
   //Compute the time interval the main algorithm took to complete.
   finish = clock();     //Stops the clock

@@ -18,6 +18,11 @@ for n in number_of_gridpoints:
         with open(filename_time, "r") as infile:
             time = float(infile.readline())
             time_used.append(time)
+    if which_algorithm == "LU":
+        filename_time = "timeused_" + str(n) + "_LU.txt"
+        with open(filename_time, "r") as infile:
+            time = float(infile.readline())
+            time_used.append(time)
 
 
 if which_algorithm == "general_algorithm":
@@ -34,3 +39,10 @@ if which_algorithm == "special_algorithm":
         for n, time in zip(number_of_gridpoints, time_used):
             outfile.write(str("%.1E" % n) + " " + str("%f" % time) + "\n")
     system("mv" + " " + filename + " " + "~/Documents/skole/comphys/projects/project1/codes/results/special_algorithm/tables")
+if which_algorithm == "LU":
+    filename = "n_vs_time_LU.txt"
+    with open(filename, "w") as outfile:
+        outfile.write("n" + " " + "time/s" + "\n")
+        for n, time in zip(number_of_gridpoints, time_used):
+            outfile.write(str("%.1E" % n) + " " + str("%f" % time) + "\n")
+    system("mv" + " " + filename + " " + "~/Documents/skole/comphys/projects/project1/codes/results/LU/tables")
