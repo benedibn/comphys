@@ -50,13 +50,15 @@ int main(int argc, char* argv[]){
     closed_form_solution(x, DE_solution[i]);
   }
 
+
+  string general_algorithm = "general_algorithm";
+  string special_algorithm = "special_algorithm";
+  string LU_Thomas = "LU";
+
   clock_t start, finish;    //Declaration of variables to time the main algorithm
   start = clock();          //Starts the clock.
 
   //Main algorithm:
-  string general_algorithm = "general_algorithm";
-  string special_algorithm = "special_algorithm";
-  string LU_Thomas = "LU";
   if (which_algorithm == general_algorithm){
     Forward_substitution(a, b, c, q, n);    //Step 1: Forward substitution
     Back_substitution(v, b, c, q, n);       //Step 2: Back-substitution
