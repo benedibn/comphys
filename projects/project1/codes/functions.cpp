@@ -16,7 +16,45 @@ To include this in your compilation, you can write
 
 using namespace std;
 
+void LU_thomas(double *a, double *b, double *c, double *d, double *l, double *u, double *y, double *q, double *v, int n){
+  //Step 1 and 2: LU-decomposition and forward substitution
+  for (int i = 0; i < n; i++){
+    if (i == 0){
+      d[i] = b[i];
+      u[i] = c[i];
+      y[i] = q[i];
+    }
+    else{
+      l[i] = a[i-1]/d[i-1];
+      d[i] = b[i] - l[i]*u[i-1];
+      u[i] = c[i];
+      y[i] = q[i] - l[i]*y[i-1];
+    }
+  }
+  //No more use for a, b and c so we deallocate their memory here.
+  delete[] a;
+  delete[] b;
+  delete[] c;
+  delete[] l;
 
+
+  //Step 3: Backward-substitution
+  for (int i = n-1; i >= 0; i--){
+    if (i == n-1){
+      v[i] = y[i]/d[i];
+    }
+    else{
+      v[i] = (y[i] - u[i]*v[i+1])/d[i];
+    }
+  }
+
+  //Deallocates y and d as their no longer needed.
+  delete[] y;
+  delete[] d;
+  delete[] u;
+  return;
+
+}
 //LU-decomposition of a tridiagonal matrix.
 void LU_decomposition(double* a, double* b, double* c, double* d, double* l, double* u, int n){
   for (int i = 0; i < n; i++){
@@ -35,6 +73,8 @@ void LU_decomposition(double* a, double* b, double* c, double* d, double* l, dou
   delete[] b;
   delete[] c;
 
+
+
   return;
 }
 
@@ -51,8 +91,8 @@ void Forward_substitutionLU(double* y, double* q, double* l, int n){
   }
 
   //q and l has served its purpose and is thus deallocated.
-  delete[] q;
-  delete[] l;
+  //delete[] q;
+  //delete[] l;
   return;
 }
 

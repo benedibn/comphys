@@ -70,9 +70,10 @@ int main(int argc, char* argv[]){
   }
   if (which_algorithm == LU_Thomas){
     cout << "Running LU-Thomas" << endl;
-    LU_decomposition(a,b,c,d,l,u,n);      //Step 1: LU-decomposition - A = LU
-    Forward_substitutionLU(y,q,l,n);      //Step 2: Forward-substitution - solves Ly = q
-    Back_substitutionLU(v,y,u,d,n);       //Step 3: Back-substitution - solves Uv = y
+    //LU_decomposition(a,b,c,d,l,u,n);      //Step 1: LU-decomposition - A = LU
+    //Forward_substitutionLU(y,q,l,n);      //Step 2: Forward-substitution - solves Ly = q
+    //Back_substitutionLU(v,y,u,d,n);       //Step 3: Back-substitution - solves Uv = y
+    LU_thomas(a, b, c, d, l, u, y, q, v, n);
   }
 
 
